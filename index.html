@@ -45,12 +45,6 @@
         body.school-mode .chart-container {
             display: none !important;
         }
-        body.school-mode .dev-panel,
-        body.school-mode #devBtn,
-        body.school-mode #exportPdfBtn,
-        body.school-mode .calc-btn {
-            display: none !important;
-        }
         body { background: var(--bg); color: var(--text); }
         .container { max-width: 1280px; margin: 0 auto; padding: 0 28px; }
         section { padding: 70px 0; }
@@ -224,6 +218,11 @@
             height: 100%;
         }
         .explain-card i { font-size: 2rem; color: var(--accent); margin-bottom: 12px; }
+        .admin-week-editor {
+            border-top: 2px solid var(--accent);
+            margin-top: 20px;
+            padding-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -407,22 +406,22 @@
                 <div><label>Заметка:</label> <input type="text" id="inputNote" placeholder="Например: заменил раствор"></div>
             </div>
             <button id="saveMeasureBtn" class="calc-btn" style="margin-top: 15px;"><i class="fas fa-save"></i> Сохранить замер</button>
-            <p class="caption" style="margin-top: 12px;">📌 После сохранения данные увидят все посетители сайта. Без пароля панель скрыта.</p>
+            
+            <!-- Админ-кнопки для управления дневником -->
+            <div class="admin-week-editor">
+                <h4><i class="fas fa-edit"></i> Управление дневником</h4>
+                <p style="font-size: 0.85rem;">Здесь можно обновить данные каждой недели. Все изменения увидят посетители сайта.</p>
+                <div id="weekEditors"></div>
+                <button id="resetDiaryBtn" class="calc-btn" style="background:#d9534f; margin-top: 15px;"><i class="fas fa-trash"></i> Сбросить дневник к начальному состоянию</button>
+            </div>
         </div>
     </div>
 
-    <!-- Живой дневник 6 недель -->
+    <!-- Живой дневник 6 недель (данные загружаются из localStorage или по умолчанию) -->
     <section id="diary" class="fade-up">
         <div class="container">
             <h2><i class="fas fa-book-open"></i> Дневник проекта</h2>
-            <div id="diaryRoot">
-                <div class="diary-week"><h3>Неделя 1 (2–8 апреля)</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+1" alt="week1"><span class="caption">Всходы, первые корешки</span></div><p>Семена проклюнулись, корни показались из агроваты.</p></div>
-                <div class="diary-week"><h3>Неделя 2 (9–15 апреля)</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+2" alt="week2"><span class="caption">Рост листьев</span></div><p>Появились настоящие листья, EC 1.0.</p></div>
-                <div class="diary-week"><h3>Неделя 3 (16–22 апреля)</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+3" alt="week3"><span class="caption">Кущение</span></div><p>Салаты активно набирают зелёную массу.</p></div>
-                <div class="diary-week"><h3>Неделя 4 (23–29 апреля)</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+4" alt="week4"><span class="caption">Финальный рост</span></div><p>Параметры стабильны, готовимся к первому сбору.</p></div>
-                <div class="diary-week"><h3>Неделя 5 (30 апреля – 6 мая)</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+5" alt="week5"><span class="caption">Урожай!</span></div><p>Срезали первые салаты, продали учителям.</p></div>
-                <div class="diary-week"><h3>Неделя 6 (7–13 мая)</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+6" alt="week6"><span class="caption">Новый цикл</span></div><p>Замена раствора, новые семена клубники.</p></div>
-            </div>
+            <div id="diaryRoot"></div>
         </div>
     </section>
 
@@ -444,12 +443,116 @@
 <footer>
     <div class="container" style="text-align: center;">
         <p><i class="fas fa-seedling"></i> HydroClass Dual — гидропонная установка своими руками</p>
-        <p>Первая посадка: 2 апреля 2026 • Автоциклы • Цикл созревания: 30 дней</p>
+        <p>Первая посадка: 2 апреля 2026 • Цикл созревания: 30 дней</p>
         <p style="margin-top: 16px;">✨ Школьный проект, 8 класс. ВСОШ | Технология ✨</p>
     </div>
 </footer>
 
 <script>
+    // ========== ДАННЫЕ ДНЕВНИКА ПО УМОЛЧАНИЮ ==========
+    const defaultWeeks = [
+        { title: "Неделя 1 (2–8 апреля)", img: "https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+1", caption: "Всходы, первые корешки", text: "Семена проклюнулись, корни показались из агроваты." },
+        { title: "Неделя 2 (9–15 апреля)", img: "https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+2", caption: "Рост листьев", text: "Появились настоящие листья, EC 1.0." },
+        { title: "Неделя 3 (16–22 апреля)", img: "https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+3", caption: "Кущение", text: "Салаты активно набирают зелёную массу." },
+        { title: "Неделя 4 (23–29 апреля)", img: "https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+4", caption: "Финальный рост", text: "Параметры стабильны, готовимся к первому сбору." },
+        { title: "Неделя 5 (30 апреля – 6 мая)", img: "https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+5", caption: "Урожай!", text: "Срезали первые салаты, продали учителям." },
+        { title: "Неделя 6 (7–13 мая)", img: "https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+6", caption: "Новый цикл", text: "Замена раствора, новые семена клубники." }
+    ];
+
+    // Загрузка или инициализация дневника
+    function loadDiary() {
+        const stored = localStorage.getItem('hydroclass_diary');
+        if(stored) {
+            return JSON.parse(stored);
+        } else {
+            localStorage.setItem('hydroclass_diary', JSON.stringify(defaultWeeks));
+            return [...defaultWeeks];
+        }
+    }
+
+    function saveDiary(weeks) {
+        localStorage.setItem('hydroclass_diary', JSON.stringify(weeks));
+        renderDiary(weeks);
+    }
+
+    function renderDiary(weeks) {
+        const diaryRoot = document.getElementById('diaryRoot');
+        if(!diaryRoot) return;
+        diaryRoot.innerHTML = '';
+        weeks.forEach((week, idx) => {
+            const weekDiv = document.createElement('div');
+            weekDiv.className = 'diary-week';
+            weekDiv.innerHTML = `
+                <h3>${escapeHtml(week.title)}</h3>
+                <div class="photo-placeholder">
+                    <img src="${escapeHtml(week.img)}" alt="week${idx+1}">
+                    <span class="caption">${escapeHtml(week.caption)}</span>
+                </div>
+                <p>${escapeHtml(week.text)}</p>
+            `;
+            diaryRoot.appendChild(weekDiv);
+        });
+    }
+
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if(m === '&') return '&amp;';
+            if(m === '<') return '&lt;';
+            if(m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+
+    // Рендер редакторов недель в админ-панели
+    function renderWeekEditors() {
+        const weeks = loadDiary();
+        const container = document.getElementById('weekEditors');
+        if(!container) return;
+        container.innerHTML = '';
+        weeks.forEach((week, idx) => {
+            const editorDiv = document.createElement('div');
+            editorDiv.style.marginBottom = '20px';
+            editorDiv.style.padding = '12px';
+            editorDiv.style.background = 'var(--surface)';
+            editorDiv.style.borderRadius = '24px';
+            editorDiv.innerHTML = `
+                <h5>Неделя ${idx+1}</h5>
+                <label>Заголовок: <input type="text" id="weekTitle${idx}" value="${escapeHtml(week.title)}" style="width:100%;"></label><br>
+                <label>Ссылка на фото: <input type="text" id="weekImg${idx}" value="${escapeHtml(week.img)}" style="width:100%;"></label><br>
+                <label>Подпись под фото: <input type="text" id="weekCaption${idx}" value="${escapeHtml(week.caption)}" style="width:100%;"></label><br>
+                <label>Текст: <textarea id="weekText${idx}" style="width:100%;" rows="2">${escapeHtml(week.text)}</textarea></label><br>
+                <button class="calc-btn save-week-btn" data-idx="${idx}" style="margin-top:8px;">Сохранить изменения</button>
+            `;
+            container.appendChild(editorDiv);
+        });
+        // Навешиваем обработчики на кнопки "Сохранить изменения"
+        document.querySelectorAll('.save-week-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const idx = parseInt(btn.getAttribute('data-idx'));
+                const newTitle = document.getElementById(`weekTitle${idx}`).value;
+                const newImg = document.getElementById(`weekImg${idx}`).value;
+                const newCaption = document.getElementById(`weekCaption${idx}`).value;
+                const newText = document.getElementById(`weekText${idx}`).value;
+                let weeks = loadDiary();
+                weeks[idx] = { title: newTitle, img: newImg, caption: newCaption, text: newText };
+                saveDiary(weeks);
+                alert(`Неделя ${idx+1} сохранена!`);
+            });
+        });
+    }
+
+    // Сброс дневника к начальному состоянию
+    function resetDiary() {
+        if(confirm('Сбросить дневник к исходным данным? Все изменения будут потеряны.')) {
+            localStorage.setItem('hydroclass_diary', JSON.stringify(defaultWeeks));
+            renderDiary(defaultWeeks);
+            if(document.getElementById('weekEditors')) renderWeekEditors();
+            alert('Дневник сброшен!');
+        }
+    }
+
     // Анимация появления
     const faders = document.querySelectorAll('.fade-up');
     const obs = new IntersectionObserver(entries => {
@@ -610,6 +713,7 @@
         if(pwd === 'hydro46') {
             devPanel.style.display = 'block';
             devBtn.innerHTML = '<i class="fas fa-check"></i> Режим разработчика';
+            renderWeekEditors(); // показать редакторы недель
         } else alert('Неверный пароль');
     });
     document.getElementById('saveMeasureBtn')?.addEventListener('click', () => {
@@ -633,6 +737,9 @@
         document.getElementById('inputNote').value = '';
     });
     
+    // Кнопка сброса дневника
+    document.getElementById('resetDiaryBtn')?.addEventListener('click', resetDiary);
+    
     // Калькулятор универсальный
     document.getElementById('universalCalcBtn')?.addEventListener('click', () => {
         let current = parseFloat(document.getElementById('calcCurrentEc').value);
@@ -648,6 +755,9 @@
         document.getElementById('universalResult').innerHTML = `📊 Нужно повысить EC на <strong>${diff.toFixed(1)}</strong> мСм в ${volume} литрах. Добавьте удобрения (монофосфат калия, хелат железа, кальциевую селитру) небольшими порциями, контролируя EC после каждого добавления.`;
     });
     
+    // Инициализация дневника
+    const initialWeeks = loadDiary();
+    renderDiary(initialWeeks);
     updateChartsAndAdvice();
 </script>
 </body>
