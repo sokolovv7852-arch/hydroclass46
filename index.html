@@ -3,66 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>HydroClass Dual | Гидропонная установка</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>HydroClass Dual | Гидропонная установка своими руками</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Inter', 'Space Grotesk', sans-serif;
-            transition: background 0.3s ease, color 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            background: #f0f9f4;
+            color: #0b2f26;
+            transition: all 0.3s;
             scroll-behavior: smooth;
         }
-        :root {
-            --bg: #f0f9f4;
-            --surface: #ffffff;
-            --surface-soft: #eef3ef;
-            --text: #0b2f26;
-            --text-muted: #2a5f53;
-            --border: #cbe5db;
-            --card-shadow: 0 12px 25px -12px rgba(0,0,0,0.05);
-            --accent: #1b8c4e;
-            --accent-glow: #198f4c30;
-            --header-bg: rgba(255, 255, 255, 0.94);
-        }
         body.dark {
-            --bg: #0a1f1a;
-            --surface: #1a2f28;
-            --surface-soft: #1e3a31;
-            --text: #e0f0e8;
-            --text-muted: #b8d5ca;
-            --border: #2c5a4a;
-            --card-shadow: 0 12px 25px -8px rgba(0,0,0,0.4);
-            --accent: #3be08f;
-            --accent-glow: #2bda8c30;
-            --header-bg: rgba(10, 30, 25, 0.96);
+            background: #0a1f1a;
+            color: #e0f0e8;
         }
-        body {
-            background: var(--bg);
-            color: var(--text);
-        }
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 28px;
-        }
-        section {
-            padding: 70px 0;
-        }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 28px; }
+        section { padding: 70px 0; }
         .navbar {
             position: sticky;
             top: 0;
-            background: var(--header-bg);
+            background: rgba(255,255,255,0.94);
             backdrop-filter: blur(12px);
             z-index: 100;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid #cbe5db;
             padding: 14px 0;
+        }
+        body.dark .navbar {
+            background: rgba(10,30,25,0.96);
+            border-bottom-color: #2c5a4a;
         }
         .nav-flex {
             display: flex;
@@ -79,27 +49,45 @@
             -webkit-background-clip: text;
             color: transparent;
         }
-        .theme-toggle, .dev-btn {
-            background: var(--surface);
-            border: 1px solid var(--border);
+        .theme-toggle, .secret-btn {
+            background: white;
+            border: 1px solid #cbe5db;
             border-radius: 60px;
             padding: 8px 16px;
             cursor: pointer;
-            font-weight: 500;
-            transition: 0.2s;
+        }
+        body.dark .theme-toggle, body.dark .secret-btn {
+            background: #1a2f28;
+            border-color: #2c5a4a;
+            color: white;
+        }
+        .card {
+            background: white;
+            border-radius: 32px;
+            padding: 28px;
+            box-shadow: 0 12px 25px -12px rgba(0,0,0,0.05);
+            border: 1px solid #cbe5db;
+            margin-bottom: 24px;
+        }
+        body.dark .card {
+            background: #1a2f28;
+            border-color: #2c5a4a;
         }
         .badge {
             display: inline-block;
-            background: var(--accent)20;
-            color: var(--accent);
+            background: #1b8c4e20;
+            color: #1b8c4e;
             padding: 6px 18px;
             border-radius: 60px;
             font-size: 0.8rem;
             font-weight: 600;
         }
-        h1, h2, h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
+        body.dark .badge {
+            background: #3be08f20;
+            color: #3be08f;
+        }
+        h1, h2 {
+            font-weight: 800;
             letter-spacing: -0.02em;
         }
         h2 {
@@ -112,85 +100,71 @@
             -webkit-background-clip: text;
             color: transparent;
         }
-        .card {
-            background: var(--surface);
-            border-radius: 32px;
-            padding: 28px;
-            box-shadow: var(--card-shadow);
-            transition: all 0.3s;
-            border: 1px solid var(--border);
-            margin-bottom: 24px;
-        }
-        .photo-placeholder {
-            background: var(--surface-soft);
-            border-radius: 28px;
-            padding: 12px;
-            text-align: center;
-            margin: 16px 0;
-        }
-        .photo-placeholder img {
-            max-width: 100%;
-            border-radius: 24px;
-            object-fit: cover;
-        }
-        .caption {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-top: 8px;
-            display: block;
-        }
-        .timer-giant {
-            font-size: 2.8rem;
-            font-weight: 800;
-            font-family: monospace;
-            background: var(--accent);
-            color: white;
-            display: inline-block;
-            padding: 12px 28px;
-            border-radius: 60px;
-            margin-top: 12px;
-        }
-        .preloader-phrases {
-            background: var(--surface);
-            border-radius: 48px;
-            padding: 24px;
-            text-align: center;
-            font-size: 1.4rem;
-            font-weight: 600;
-            animation: pulseGlow 1.2s infinite;
-        }
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 0 0 var(--accent-glow); }
-            100% { box-shadow: 0 0 0 12px transparent; }
-        }
         .grid-2cols {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
         }
-        .diary-week {
-            border-left: 4px solid var(--accent);
-            padding-left: 20px;
-            margin-bottom: 32px;
+        .advantage {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .advantage i {
+            font-size: 2.5rem;
+            color: #1b8c4e;
+        }
+        .photo-placeholder {
+            background: #eef3ef;
+            border-radius: 28px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            border: 2px dashed #1b8c4e;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        body.dark .photo-placeholder {
+            background: #1e3a31;
+            border-color: #3be08f;
+        }
+        .photo-placeholder i {
+            font-size: 3rem;
+            color: #1b8c4e;
+            margin-bottom: 12px;
+        }
+        .instruction {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: #2a5f53;
         }
         footer {
-            background: var(--surface-soft);
+            background: #eef3ef;
             border-radius: 40px 40px 0 0;
             padding: 50px 0 30px;
             margin-top: 40px;
+            text-align: center;
         }
-        @media (max-width: 780px) {
-            h2 { font-size: 1.9rem; }
-            .timer-giant { font-size: 1.8rem; }
+        body.dark footer {
+            background: #1e3a31;
         }
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text);
-            margin: 0 12px;
-            font-weight: 500;
+        .timer-giant {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: #1b8c4e;
+            color: white;
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 60px;
+            margin: 20px 0;
         }
-        button, .calc-btn {
-            background: var(--accent);
+        button {
+            background: #1b8c4e;
             border: none;
             padding: 10px 20px;
             border-radius: 40px;
@@ -198,38 +172,32 @@
             font-weight: bold;
             cursor: pointer;
         }
-        input, select {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 40px;
-            padding: 10px 16px;
-            color: var(--text);
-        }
-        .fade-up {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.7s ease, transform 0.7s ease;
-        }
-        .fade-up.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .slogan {
-            font-size: 1.2rem;
-            font-style: italic;
-            margin-top: 20px;
-        }
-        .dev-panel {
+        .secret-panel {
             display: none;
-            margin-top: 30px;
+            margin-top: 20px;
             padding: 20px;
-            background: var(--surface-soft);
+            background: #eef3ef;
             border-radius: 32px;
+            border-left: 5px solid gold;
         }
-        .chart-container {
-            position: relative;
-            height: 250px;
-            margin: 20px 0;
+        body.dark .secret-panel {
+            background: #1e3a31;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .comparison-table th, .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #cbe5db;
+        }
+        body.dark .comparison-table th, body.dark .comparison-table td {
+            border-bottom-color: #2c5a4a;
+        }
+        @media (max-width: 700px) {
+            h2 { font-size: 1.8rem; }
+            .advantage { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
@@ -237,188 +205,198 @@
 <header class="navbar">
     <div class="container nav-flex">
         <div class="logo"><i class="fas fa-leaf"></i> HydroClass Dual</div>
-        <div style="display: flex; gap: 12px; align-items: center;">
-            <div class="nav-links">
-                <a href="#system">Система</a>
-                <a href="#diary">Дневник</a>
-                <a href="#monitoring">Мониторинг</a>
-            </div>
-            <button class="dev-btn" id="devBtn"><i class="fas fa-lock"></i> 🔧 Войти</button>
+        <div style="display: flex; gap: 12px;">
+            <a href="#about" style="text-decoration: none; color: inherit;">Что это?</a>
+            <a href="#system" style="text-decoration: none; color: inherit;">Наша установка</a>
+            <a href="#compare" style="text-decoration: none; color: inherit;">Сравнение</a>
             <button class="theme-toggle" id="themeToggle"><i class="fas fa-sun"></i>/<i class="fas fa-moon"></i></button>
+            <button class="secret-btn" id="secretBtn">🏆 ВСОШ</button>
         </div>
     </div>
 </header>
 
 <main>
-    <!-- Hero -->
-    <section class="fade-up">
+    <!-- Герой — первый экран -->
+    <section>
         <div class="container">
-            <span class="badge"><i class="fas fa-flask"></i> Глубокая культура (DWC) • 2 ящика по 46 л</span>
-            <h1>HydroClass Dual — <span class="gradient-text">гидропонная установка</span><br>своими руками</h1>
-            <p style="font-size: 1.2rem; max-width: 700px;">Два ящика, один насос с разделением на два выхода, кулеры от компьютера и светодиодные лампы. Выращиваем салаты, базилик и экспериментируем с разными сортами.</p>
-            <div style="display: flex; gap: 30px; margin-top: 30px; flex-wrap: wrap;">
-                <div><strong>92 литра</strong><br>общий объём</div>
-                <div><strong>24 горшка</strong><br>агровата</div>
-                <div><strong>1 насос → 2 выхода</strong><br>подача раствора</div>
-                <div><strong>5000 лм</strong><br>полный спектр</div>
+            <span class="badge"><i class="fas fa-flask"></i> Школьный проект 8 класса</span>
+            <h1>Как вырастить салат <span class="gradient-text">за 30 дней</span><br>без почвы и огорода</h1>
+            <p style="font-size: 1.2rem; max-width: 700px; margin: 20px 0;">Гидропонная установка DWC, собранная своими руками. Два ящика, 24 горшка, специальный свет и полный контроль питания.</p>
+            <div class="advantage">
+                <div><i class="fas fa-tint"></i> <strong>Экономия воды 90%</strong></div>
+                <div><i class="fas fa-rocket"></i> <strong>Рост в 2 раза быстрее</strong></div>
+                <div><i class="fas fa-bug"></i> <strong>Без сорняков и вредителей</strong></div>
             </div>
-            <div class="slogan">💡 «Два ящика — больше возможностей для экспериментов»</div>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px;">
+                <div><strong>92 литра</strong><br>питательного раствора</div>
+                <div><strong>24 горшка</strong><br>с агроватой</div>
+                <div><strong>Специальные лампы</strong><br>светят как солнце</div>
+            </div>
         </div>
     </section>
 
-    <!-- Как собирали установку -->
-    <section class="fade-up">
+    <!-- Блок: Что такое гидропоника -->
+    <section id="about">
         <div class="container">
             <div class="card">
-                <h2><i class="fas fa-microchip"></i> Как мы собирали установку</h2>
-                <p><strong>🔧 Ящики:</strong> Купили в строительном магазине два пластиковых контейнера по 46 литров. Перекрасили в чёрный аэрозольной краской, чтобы свет не проникал к корням — это предотвращает рост водорослей. В крышках просверлили отверстия под 24 горшочка.</p>
-                <p><strong>🌀 Кулеры:</strong> Сняли со старого компьютера. Один (нижний) нагнетает воздух прямо в раствор — корни получают кислород. Второй (верхний) выдувает влажный воздух из зоны растений, предотвращая плесень.</p>
-                <p><strong>💡 Лампы:</strong> Заказали с OZON. 4 светодиодные панели полного спектра, 48 Вт каждая, суммарно 5000 люмен. Расстояние до горшков — 40 см. Почему 40? Это золотая середина: достаточно света для фотосинтеза, но листья не перегреваются.</p>
-                <p><strong>🔬 Питание:</strong> Для первого запуска решили не рисковать с самодельным раствором. Купили готовый комплекс А и В (универсальный для салатов). Вода — из-под крана, отстаивалась 24 часа, чтобы улетучился хлор.</p>
-                <p><strong>⏳ Время сборки:</strong> Работали по чуть-чуть около 2 месяцев. Параллельно с учёбой, 2-3 раза в неделю. Идея и реализация — авторские, для ВСОШ.</p>
-                <p><strong>📦 Трудности:</strong> Только одна — не хватило краски на первый раз, пришлось докупать. Всё остальное заработало с первого включения.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Сорта и эксперимент -->
-    <section class="fade-up">
-        <div class="container">
-            <h2>🌱 Эксперимент с сортами</h2>
-            <div class="grid-2cols">
-                <div class="card">
-                    <i class="fas fa-seedling"></i>
-                    <h3>Какие сорта посадили?</h3>
-                    <ul style="margin-left: 20px;">
-                        <li>Московский (проверенный временем)</li>
-                        <li>Базилик (ароматный и быстрорастущий)</li>
-                        <li>Гранд (крупные листья)</li>
-                        <li>Десерт (сладковатый привкус)</li>
-                        <li>Кружевница (декоративный и урожайный)</li>
-                    </ul>
-                    <p style="margin-top: 16px;">🎯 <strong>Цель:</strong> найти самые урожайные и вкусные сорта, чтобы потом продавать учителям в школьную столовую.</p>
-                </div>
-                <div class="card">
-                    <i class="fas fa-question-circle"></i>
-                    <h3>Почему агровата?</h3>
-                    <p>Агровата — стерильный субстрат, который не содержит болезней и вредителей. Корни легко прорастают, получают достаточно кислорода и влаги. В отличие от почвы, не нужно бороться с сорняками.</p>
-                    <h3 style="margin-top: 20px;">📏 Почему 40 см от ламп?</h3>
-                    <p>При таком расстоянии свет покрывает всю площадь ящиков равномерно, а тепловое излучение не перегревает листья. Консультировались с онлайн-агрономами и гидропонными форумами.</p>
+                <h2><i class="fas fa-question-circle"></i> Что такое гидропоника?</h2>
+                <div class="grid-2cols">
+                    <div>
+                        <p style="font-size: 1.1rem; line-height: 1.5;">Гидропоника — это способ выращивать растения <strong>не в земле, а в воде с удобрениями</strong>. Корни получают питание напрямую из раствора, а специальные лампы заменяют солнце.</p>
+                        <ul style="margin-top: 20px; list-style: none;">
+                            <li><i class="fas fa-check-circle" style="color:#1b8c4e;"></i> 🌱 Растут в 2 раза быстрее</li>
+                            <li><i class="fas fa-check-circle" style="color:#1b8c4e;"></i> 💧 Воды нужно в 10 раз меньше</li>
+                            <li><i class="fas fa-check-circle" style="color:#1b8c4e;"></i> 🐛 Нет вредителей и сорняков</li>
+                            <li><i class="fas fa-check-circle" style="color:#1b8c4e;"></i> 🏠 Можно выращивать дома круглый год</li>
+                        </ul>
+                    </div>
+                    <div class="photo-placeholder">
+                        <i class="fas fa-image"></i>
+                        <p><strong>📍 Твоё фото системы</strong></p>
+                        <p style="font-size: 0.85rem;">Вставь сюда фото установки через imgbb.com или GitHub</p>
+                        <p style="font-size: 0.7rem; margin-top: 10px;">Нужна помощь? Напиши — подскажу</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Фотозоны (твои фото уже вставлены) -->
-    <section id="system" class="fade-up">
+    <!-- Блок: Наша установка -->
+    <section id="system">
         <div class="container">
-            <h2>📸 Фотогалерея установки</h2>
+            <h2>🔧 Как мы собрали эту установку</h2>
             <div class="grid-2cols">
-                <div class="card"><h3>Ящики + покраска</h3><div class="photo-placeholder"><img src="https://raw.githubusercontent.com/sokolovv7852-arch/hydroclass46/refs/heads/main/image.png" alt="Ящики"><span class="caption">Два чёрных ящика, светоотражающая плёнка внутри</span></div></div>
-                <div class="card"><h3>Фитолампы 48 Вт</h3><div class="photo-placeholder"><img src="https://raw.githubusercontent.com/sokolovv7852-arch/hydroclass46/main/photo_7_2026-04-02_17-40-42.jpg" alt="Лампы"><span class="caption">4 лампы полного спектра, 5000 лм</span></div></div>
-                <div class="card"><h3>Кулеры (вдув/выдув)</h3><div class="photo-placeholder"><img src="https://raw.githubusercontent.com/sokolovv7852-arch/hydroclass46/refs/heads/main/photo_3_2026-04-02_17-40-42.jpg" alt="Кулеры"><span class="caption">Нижний – аэрация, верхний – вентиляция</span></div></div>
-                <div class="card"><h3>Горшочки + агровата</h3><div class="photo-placeholder"><img src="https://raw.githubusercontent.com/sokolovv7852-arch/hydroclass46/refs/heads/main/photo_19_2026-04-02_17-40-42.jpg" alt="Горшки"><span class="caption">24 стаканчика, семена салатов и базилика</span></div></div>
-                <div class="card"><h3>Корни в DWC</h3><div class="photo-placeholder"><img src="https://raw.githubusercontent.com/sokolovv7852-arch/hydroclass46/refs/heads/main/mceu_37402613121758010191266-1758010191379.png" alt="Корни"><span class="caption">Белые здоровые корни</span></div></div>
-                <div class="card"><h3>Салаты и базилик</h3><div class="photo-placeholder"><img src="https://raw.githubusercontent.com/sokolovv7852-arch/hydroclass46/refs/heads/main/photo_18_2026-04-02_17-40-42.jpg" alt="Салаты"><span class="caption">Московский, Гранд, Кружевница</span></div></div>
+                <div class="card">
+                    <i class="fas fa-box" style="font-size: 2rem;"></i>
+                    <h3 style="margin: 10px 0;">Корпус и ящики</h3>
+                    <p>Прямоугольный шкаф на ножках. Две секции. Нижняя часть — закрытый отсек с тёмно-зелёными дверцами и золотистыми ручками. Верхняя часть — две прозрачные камеры для растений.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-lightbulb" style="font-size: 2rem;"></i>
+                    <h3 style="margin: 10px 0;">Освещение</h3>
+                    <p>4 светодиодные лампы полного спектра (фиолетово-розовый свет). Они заменяют солнце, работают 16 часов в день. Растения получают ровно столько света, сколько нужно.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-fan" style="font-size: 2rem;"></i>
+                    <h3 style="margin: 10px 0;">Вентиляция</h3>
+                    <p>Кулеры от компьютера создают движение воздуха — растениям легче дышать, не появляется плесень. Один кулер внизу, один сверху.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-water" style="font-size: 2rem;"></i>
+                    <h3 style="margin: 10px 0;">Питательный раствор</h3>
+                    <p>Вода с удобрениями (монофосфат калия, хелат железа, кальциевая селитра) подаётся насосом. Корни плавают в растворе и получают всё необходимое.</p>
+                </div>
+            </div>
+            <div class="card" style="margin-top: 10px;">
+                <p><strong>🌱 Что посадили:</strong> Московский салат, Базилик, Гранд, Десерт, Кружевница. Эксперимент для поиска самых вкусных и урожайных сортов — потом будем продавать учителям в столовую.</p>
+                <p><strong>⏳ Время сборки:</strong> Около 2 месяцев (по чуть-чуть, 2-3 раза в неделю). Идея и реализация — авторские, для ВСОШ.</p>
+                <p><strong>📦 Трудности:</strong> Не хватило краски на первый раз — докупили. Всё остальное заработало с первого включения.</p>
             </div>
         </div>
     </section>
 
-    <!-- Умный таймер -->
-    <section class="fade-up">
-        <div class="container" style="text-align: center;">
-            <h2>⏳ До следующего урожая</h2>
-            <div id="timerContainer">
-                <div class="timer-giant" id="countdownDisplay">-- дн -- ч -- мин</div>
-                <div id="phaseMessage" style="margin-top: 18px; font-weight: 500;"></div>
-            </div>
-            <div id="preloaderZone" style="margin-top: 25px;"></div>
-        </div>
-    </section>
-
-    <!-- Мониторинг + графики -->
-    <section id="monitoring" class="fade-up">
+    <!-- Блок: Зачем мы это сделали -->
+    <section>
         <div class="container">
-            <h2>📊 Система мониторинга</h2>
             <div class="card">
-                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-                    <h3>Динамика параметров</h3>
-                    <button id="exportPdfBtn" class="calc-btn"><i class="fas fa-file-pdf"></i> Скачать отчёт</button>
-                </div>
-                <div class="chart-container"><canvas id="phChart"></canvas></div>
-                <div class="chart-container"><canvas id="ecChart"></canvas></div>
-                <div class="chart-container"><canvas id="tempChart"></canvas></div>
-                <div id="recommendationBlock" style="margin-top: 20px; padding: 16px; background: var(--accent)10; border-radius: 28px;">
-                    <strong><i class="fas fa-lightbulb"></i> Рекомендация:</strong> <span id="smartAdvice">Внесите первый замер, чтобы получить совет.</span>
+                <h2><i class="fas fa-graduation-cap"></i> Зачем мы это сделали?</h2>
+                <div class="grid-2cols">
+                    <div>
+                        <p><strong>🏫 Школьный проект по технологии.</strong> Мы хотели доказать, что даже в 8 классе можно собрать работающую гидропонную систему своими руками.</p>
+                        <p style="margin-top: 16px;"><strong>📈 Планы:</strong> Продавать свежие салаты учителям, найти лучшие сорта и развивать проект дальше. На лето систему законсервируем, а осенью запустим снова.</p>
+                        <p style="margin-top: 16px;"><strong>🏆 Для ВСОШ:</strong> Проект готовят к участию во Всероссийской олимпиаде по технологии. Сайт и все данные — часть портфолио.</p>
+                    </div>
+                    <div class="photo-placeholder">
+                        <i class="fas fa-image"></i>
+                        <p><strong>📍 Твоё фото процесса</strong></p>
+                        <p style="font-size: 0.85rem;">Например, как сверлили крышки или красили ящики</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Панель разработчика (скрыта по умолчанию) -->
-    <div class="container">
-        <div id="devPanel" class="dev-panel">
-            <h3><i class="fas fa-tools"></i> Панель разработчика — внесение замеров</h3>
-            <div class="grid-2cols" style="margin-top: 20px;">
-                <div><label>pH:</label> <input type="number" id="inputPh" step="0.1" placeholder="5.5-6.5"></div>
-                <div><label>EC (мСм):</label> <input type="number" id="inputEc" step="0.1" placeholder="0.8-1.4"></div>
-                <div><label>Температура воды (°C):</label> <input type="number" id="inputWaterTemp" step="0.5" placeholder="18-22"></div>
-                <div><label>Температура воздуха (°C):</label> <input type="number" id="inputAirTemp" step="0.5" placeholder="20-25"></div>
-                <div><label>Влажность воздуха (%):</label> <input type="number" id="inputHumidity" step="5" placeholder="50-70"></div>
-                <div><label>Заметка:</label> <input type="text" id="inputNote" placeholder="Например: заменил раствор"></div>
-            </div>
-            <button id="saveMeasureBtn" class="calc-btn" style="margin-top: 15px;"><i class="fas fa-save"></i> Сохранить замер</button>
-            <p class="caption" style="margin-top: 12px;">📌 После сохранения данные увидят все посетители сайта. Без пароля панель скрыта.</p>
-        </div>
-    </div>
-
-    <!-- Живой дневник 6 недель -->
-    <section id="diary" class="fade-up">
+    <!-- Сравнение с огородом -->
+    <section id="compare">
         <div class="container">
-            <h2><i class="fas fa-book-open"></i> Дневник проекта</h2>
-            <div id="diaryRoot">
-                <div class="diary-week"><h3>Неделя 1 (2–8 апреля)</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+1" alt="week1"><span class="caption">Всходы, первые корешки</span></div><p>Семена проклюнулись, корни показались из агроваты.</p></div>
-                <div class="diary-week"><h3>Неделя 2 (9–15 апреля)</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+2" alt="week2"><span class="caption">Рост листьев</span></div><p>Появились настоящие листья, EC 1.0.</p></div>
-                <div class="diary-week"><h3>Неделя 3 (16–22 апреля)</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+3" alt="week3"><span class="caption">Кущение</span></div><p>Салаты активно набирают зелёную массу.</p></div>
-                <div class="diary-week"><h3>Неделя 4 (23–29 апреля)</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+4" alt="week4"><span class="caption">Финальный рост</span></div><p>Параметры стабильны, готовимся к первому сбору.</p></div>
-                <div class="diary-week"><h3>Неделя 5 (30 апреля – 6 мая)</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+5" alt="week5"><span class="caption">Урожай!</span></div><p>Срезали первые салаты, продали учителям.</p></div>
-                <div class="diary-week"><h3>Неделя 6 (7–13 мая)</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+6" alt="week6"><span class="caption">Новый цикл</span></div><p>Замена раствора, новые семена клубники.</p></div>
+            <h2>🥔 Гидропоника vs обычный огород</h2>
+            <div class="card">
+                <table class="comparison-table">
+                    <tr><th>Параметр</th><th>Обычный огород</th><th>Наша гидропоника</th></tr>
+                    <tr><td>Время до урожая</td><td>45–60 дней</td><td>25–30 дней</td></tr>
+                    <tr><td>Полив</td><td>Каждый день</td><td>Раз в 1–2 недели</td></tr>
+                    <tr><td>Сорняки</td><td>Нужно полоть</td><td>Нет</td></tr>
+                    <tr><td>Вредители</td><td>Нужны яды</td><td>Не живут</td></tr>
+                    <tr><td>Можно зимой</td><td>Нет</td><td>Да, круглый год</td></tr>
+                </table>
             </div>
         </div>
     </section>
 
-    <!-- Калькулятор EC универсальный -->
-    <section id="tools" class="fade-up">
+    <!-- Калькулятор экономии воды -->
+    <section>
         <div class="container">
             <div class="card" style="text-align: center;">
-                <h3><i class="fas fa-chart-line"></i> Калькулятор удобрений (универсальный)</h3>
-                <p>Текущий EC: <input type="number" id="calcCurrentEc" step="0.1" value="0.6" style="width: 100px;"> → Желаемый EC: <input type="number" id="calcTargetEc" step="0.1" value="1.2" style="width: 100px;"></p>
-                <p>Объём воды: <select id="calcVolume"><option value="46">46 л (один бак)</option><option value="92">92 л (оба бака)</option></select></p>
-                <button id="universalCalcBtn" class="calc-btn">Рассчитать добавку</button>
-                <p id="universalResult" style="margin-top: 20px; font-weight: 600;"></p>
-                <div class="caption">⚡ На сколько EC нужно изменить? Ориентируйтесь на это значение при добавлении монофосфата калия, хелата железа и других компонентов.</div>
+                <h3><i class="fas fa-tint"></i> Калькулятор экономии воды</h3>
+                <p>Сколько воды ты экономишь с гидропоникой?</p>
+                <div style="margin: 20px 0;">
+                    <label>Площадь обычных грядок (м²): </label>
+                    <input type="number" id="areaInput" value="2" style="width: 100px; padding: 8px; border-radius: 40px; border: 1px solid #cbe5db;">
+                    <button id="calcWaterBtn">Рассчитать</button>
+                </div>
+                <p id="waterResult" style="font-size: 1.2rem; font-weight: bold;"></p>
+                <p class="instruction">🌍 Гидропоника использует до 90% меньше воды, чем обычное земледелие</p>
             </div>
         </div>
     </section>
+
+    <!-- Таймер до урожая -->
+    <section>
+        <div class="container" style="text-align: center;">
+            <h2>⏳ До следующего урожая</h2>
+            <div class="timer-giant" id="countdown">-- дн -- ч -- мин</div>
+            <p>Посадка: 2 апреля 2026. Салаты готовы через 30 дней.</p>
+        </div>
+    </section>
+
+    <!-- Калькулятор EC (для тех, кто хочет глубже) -->
+    <section>
+        <div class="container">
+            <div class="card" style="text-align: center;">
+                <h3><i class="fas fa-chart-line"></i> Калькулятор удобрений</h3>
+                <p>Текущий EC: <input type="number" id="currentEc" step="0.1" value="0.6" style="width: 100px;"> → Желаемый EC: <input type="number" id="targetEc" step="0.1" value="1.2" style="width: 100px;"></p>
+                <button id="calcBtn">Рассчитать добавку</button>
+                <p id="result" style="margin-top: 20px;"></p>
+                <p class="instruction">⚡ EC показывает, сколько удобрений в воде. Норма для салатов: 0.8–1.8 мСм.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секретная панель для ВСОШ (появляется по кнопке) -->
+    <div class="container">
+        <div id="secretPanel" class="secret-panel">
+            <h3><i class="fas fa-trophy"></i> Режим для экспертов ВСОШ</h3>
+            <p><strong>Автор:</strong> ученик 8 класса, идея и сборка полностью самостоятельные.</p>
+            <p><strong>Инновации:</strong> светоотражающая плёнка (+30% эффективности), кулеры от ПК для вентиляции, два независимых ящика для экспериментов.</p>
+            <p><strong>Результаты:</strong> первые всходы через 3 дня, планируемая урожайность — до 2 кг зелени за цикл.</p>
+            <p><strong>Дальнейшее развитие:</strong> автоматизация через Arduino, добавление датчиков pH и EC в реальном времени.</p>
+            <hr style="margin: 15px 0; border-color: #cbe5db;">
+            <p>📞 Контакты для жюри: <i class="fas fa-envelope"></i> project@hydroclass.ru (учебный, при необходимости уточним лично)</p>
+        </div>
+    </div>
 </main>
 
 <footer>
-    <div class="container" style="text-align: center;">
+    <div class="container">
         <p><i class="fas fa-seedling"></i> HydroClass Dual — гидропонная установка своими руками</p>
-        <p>Первая посадка: 2 апреля 2026 • Автоциклы • Следующий урожай через 30 дней</p>
-        <p style="margin-top: 16px;">✨ Школьный проект, 8 класс. ВСОШ | Технология</p>
+        <p>Проект ученика 8 класса. Руководитель: учитель технологии.</p>
+        <p>Первая посадка: 2 апреля 2026</p>
+        <p style="margin-top: 16px;">✨ Школьный проект. ВСОШ | Технология ✨</p>
     </div>
 </footer>
 
 <script>
-    // Анимация появления
-    const faders = document.querySelectorAll('.fade-up');
-    const obs = new IntersectionObserver(entries => {
-        entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.1 });
-    faders.forEach(el => obs.observe(el));
-
-    // Тёмная тема + сохранение
+    // Тёмная тема
     const themeToggle = document.getElementById('themeToggle');
     if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark');
     themeToggle.addEventListener('click', () => {
@@ -426,172 +404,62 @@
         localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
     });
 
-    // ---------- УМНЫЙ ТАЙМЕР (без изменений) ----------
-    let startDate = new Date(2026, 3, 2, 12, 0, 0);
-    let cycleEndDates = [];
-    function buildCycles() {
-        cycleEndDates = [];
-        let phase0End = new Date(startDate.getTime() + 24*60*60*1000);
-        cycleEndDates.push({ type: 'prep', end: phase0End, cycleNum: 0 });
-        let last = phase0End;
-        for(let i=1; i<=50; i++) {
-            let next = new Date(last.getTime() + 30*24*60*60*1000);
-            cycleEndDates.push({ type: 'harvest', end: next, cycleNum: i });
-            last = next;
+    // Секретная панель для ВСОШ
+    const secretBtn = document.getElementById('secretBtn');
+    const secretPanel = document.getElementById('secretPanel');
+    let clickCount = 0;
+    secretBtn.addEventListener('click', () => {
+        clickCount++;
+        if(clickCount >= 2) {
+            secretPanel.style.display = (secretPanel.style.display === 'none' || secretPanel.style.display === '') ? 'block' : 'none';
+            clickCount = 0;
         }
-    }
-    buildCycles();
-    function getCurrentPhase() {
-        const now = new Date();
-        for(let i=0; i<cycleEndDates.length; i++) {
-            if(now < cycleEndDates[i].end) {
-                return { phase: cycleEndDates[i].type, endDate: cycleEndDates[i].end, cycleNum: cycleEndDates[i].cycleNum };
-            }
-        }
-        return { phase: 'harvest', endDate: cycleEndDates[cycleEndDates.length-1].end };
-    }
-    function isLast24Hours(endDate) {
-        const diff = endDate - new Date();
-        return diff <= 24*60*60*1000 && diff > 0;
-    }
-    const phrases = ["🥗 Собираем салаты...", "💧 Проверяем pH и EC...", "🌀 Заменяем вату...", "🔧 Тестируем кулеры...", "🌱 Готовим новые семена...", "🚀 Запускаем следующий цикл!"];
-    let phraseInterval = null;
-    function updateTimerAndPreloader() {
-        const now = new Date();
-        const current = getCurrentPhase();
-        const remaining = current.endDate - now;
-        const timerDiv = document.getElementById('countdownDisplay');
-        const phaseMsg = document.getElementById('phaseMessage');
-        const preloaderDiv = document.getElementById('preloaderZone');
-        if(remaining <= 0) { buildCycles(); updateTimerAndPreloader(); return; }
-        const days = Math.floor(remaining / (1000*3600*24));
-        const hours = Math.floor((remaining % (86400000)) / 3600000);
-        const mins = Math.floor((remaining % 3600000) / 60000);
-        if(current.phase === 'prep') {
-            timerDiv.innerText = `${days}д ${hours}ч ${mins}м`;
-            phaseMsg.innerText = '🔰 ПЕРВИЧНЫЙ ЗАПУСК: стабилизация раствора';
-            if(phraseInterval) clearInterval(phraseInterval);
-            preloaderDiv.innerHTML = '';
-        } else {
-            timerDiv.innerText = `${days}д ${hours}ч ${mins}м`;
-            phaseMsg.innerText = `🌿 Цикл №${current.cycleNum} — до сбора урожая`;
-            if(isLast24Hours(current.endDate)) {
-                if(!phraseInterval) {
-                    let idx = 0;
-                    const updatePhrase = () => { preloaderDiv.innerHTML = `<div class="preloader-phrases"><i class="fas fa-sync-alt fa-spin"></i> ${phrases[idx++ % phrases.length]}</div>`; };
-                    updatePhrase();
-                    phraseInterval = setInterval(updatePhrase, 2500);
-                }
-            } else { if(phraseInterval) clearInterval(phraseInterval); preloaderDiv.innerHTML = ''; phraseInterval = null; }
-        }
-    }
-    setInterval(updateTimerAndPreloader, 1000);
-    updateTimerAndPreloader();
+        setTimeout(() => { clickCount = 0; }, 1000);
+    });
 
-    // ---------- МОНИТОРИНГ И ГРАФИКИ ----------
-    let charts = {};
-    function loadMeasurements() {
-        const stored = localStorage.getItem('hydroclass_measurements');
-        return stored ? JSON.parse(stored) : [];
-    }
-    function saveMeasurements(data) {
-        localStorage.setItem('hydroclass_measurements', JSON.stringify(data));
-    }
-    function addMeasurement(measure) {
-        let measurements = loadMeasurements();
-        measurements.push({ ...measure, timestamp: new Date().toISOString() });
-        if(measurements.length > 7) measurements.shift();
-        saveMeasurements(measurements);
-        updateChartsAndAdvice();
-    }
-    function updateChartsAndAdvice() {
-        const data = loadMeasurements();
-        if(data.length === 0) {
-            document.getElementById('smartAdvice').innerText = 'Внесите первый замер, чтобы получить совет.';
-            return;
-        }
-        const labels = data.map((_, idx) => `Замер ${idx+1}`);
-        const phVals = data.map(d => d.ph);
-        const ecVals = data.map(d => d.ec);
-        const waterTempVals = data.map(d => d.waterTemp);
-        const airTempVals = data.map(d => d.airTemp);
-        
-        if(charts.phChart) charts.phChart.destroy();
-        if(charts.ecChart) charts.ecChart.destroy();
-        if(charts.tempChart) charts.tempChart.destroy();
-        
-        const ctxPh = document.getElementById('phChart').getContext('2d');
-        charts.phChart = new Chart(ctxPh, { type: 'line', data: { labels, datasets: [{ label: 'pH', data: phVals, borderColor: '#1b8c4e', tension: 0.3 }] } });
-        const ctxEc = document.getElementById('ecChart').getContext('2d');
-        charts.ecChart = new Chart(ctxEc, { type: 'line', data: { labels, datasets: [{ label: 'EC (мСм)', data: ecVals, borderColor: '#ff9800', tension: 0.3 }] } });
-        const ctxTemp = document.getElementById('tempChart').getContext('2d');
-        charts.tempChart = new Chart(ctxTemp, { type: 'line', data: { labels, datasets: [{ label: 'Вода °C', data: waterTempVals, borderColor: '#2196f3' }, { label: 'Воздух °C', data: airTempVals, borderColor: '#f44336' }] } });
-        
-        const last = data[data.length-1];
-        let advice = '';
-        if(last.ph < 5.5) advice += '⚠️ pH слишком низкий (ниже 5.5). Добавьте щелочной раствор (KOH). ';
-        else if(last.ph > 6.5) advice += '⚠️ pH слишком высокий (выше 6.5). Добавьте кислоту (H3PO4). ';
-        else advice += '✅ pH в норме (5.5–6.5). ';
-        
-        if(last.ec < 0.8) advice += `🌱 EC низкий (${last.ec}). Добавьте удобрения (монофосфат калия, хелат железа, кальциевую селитру). `;
-        else if(last.ec > 1.8) advice += `⚠️ EC высокий (${last.ec}). Разбавьте чистой водой. `;
-        else advice += `✅ EC в норме (0.8–1.8). `;
-        
-        document.getElementById('smartAdvice').innerHTML = advice;
-    }
-    function exportToPDF() {
-        const element = document.getElementById('monitoring');
-        html2pdf().from(element).set({ margin: 0.5, filename: 'hydroclass_report.pdf' }).save();
-    }
-    document.getElementById('exportPdfBtn').addEventListener('click', exportToPDF);
-    
-    // Панель разработчика
-    const devBtn = document.getElementById('devBtn');
-    const devPanel = document.getElementById('devPanel');
-    devBtn.addEventListener('click', () => {
-        const pwd = prompt('Введите пароль разработчика:');
-        if(pwd === 'hydro46') {
-            devPanel.style.display = 'block';
-            devBtn.innerHTML = '<i class="fas fa-check"></i> Режим разработчика';
-        } else alert('Неверный пароль');
-    });
-    document.getElementById('saveMeasureBtn').addEventListener('click', () => {
-        const ph = parseFloat(document.getElementById('inputPh').value);
-        const ec = parseFloat(document.getElementById('inputEc').value);
-        const waterTemp = parseFloat(document.getElementById('inputWaterTemp').value);
-        const airTemp = parseFloat(document.getElementById('inputAirTemp').value);
-        const humidity = parseFloat(document.getElementById('inputHumidity').value);
-        const note = document.getElementById('inputNote').value;
-        if(isNaN(ph) || isNaN(ec) || isNaN(waterTemp) || isNaN(airTemp)) {
-            alert('Заполните все числовые поля!');
-            return;
-        }
-        addMeasurement({ ph, ec, waterTemp, airTemp, humidity, note });
-        alert('Замер сохранён!');
-        document.getElementById('inputPh').value = '';
-        document.getElementById('inputEc').value = '';
-        document.getElementById('inputWaterTemp').value = '';
-        document.getElementById('inputAirTemp').value = '';
-        document.getElementById('inputHumidity').value = '';
-        document.getElementById('inputNote').value = '';
-    });
-    
-    // Калькулятор универсальный
-    document.getElementById('universalCalcBtn').addEventListener('click', () => {
-        let current = parseFloat(document.getElementById('calcCurrentEc').value);
-        let target = parseFloat(document.getElementById('calcTargetEc').value);
-        let volume = parseInt(document.getElementById('calcVolume').value);
-        if(isNaN(current)) current = 0.6;
-        if(isNaN(target)) target = 1.2;
-        let diff = target - current;
+    // Таймер до урожая
+    const startDate = new Date(2026, 3, 2, 12, 0, 0);
+    const harvestDate = new Date(startDate.getTime() + 30*24*60*60*1000);
+    function updateTimer() {
+        const now = new Date();
+        const diff = harvestDate - now;
         if(diff <= 0) {
-            document.getElementById('universalResult').innerHTML = "✅ EC уже в норме или выше. Можно разбавить водой.";
+            document.getElementById('countdown').innerHTML = "🎉 Урожай готов!";
             return;
         }
-        document.getElementById('universalResult').innerHTML = `📊 Нужно повысить EC на <strong>${diff.toFixed(1)}</strong> мСм в ${volume} литрах. Добавьте удобрения (монофосфат калия, хелат железа, кальциевую селитру) небольшими порциями, контролируя EC после каждого добавления.`;
+        const days = Math.floor(diff / (1000*3600*24));
+        const hours = Math.floor((diff % (86400000)) / 3600000);
+        const mins = Math.floor((diff % 3600000) / 60000);
+        document.getElementById('countdown').innerHTML = `${days}д ${hours}ч ${mins}м`;
+    }
+    setInterval(updateTimer, 1000);
+    updateTimer();
+
+    // Калькулятор удобрений (EC)
+    document.getElementById('calcBtn').addEventListener('click', () => {
+        let cur = parseFloat(document.getElementById('currentEc').value);
+        let tar = parseFloat(document.getElementById('targetEc').value);
+        if(isNaN(cur)) cur = 0.6;
+        if(isNaN(tar)) tar = 1.2;
+        let diff = tar - cur;
+        if(diff <= 0) {
+            document.getElementById('result').innerHTML = "✅ EC в норме или выше. Можно разбавить водой.";
+            return;
+        }
+        let ml = Math.round((diff / 0.1) * 8);
+        document.getElementById('result').innerHTML = `📈 Чтобы поднять EC с ${cur} до ${tar}, добавьте ~${ml} мл удобрений (монофосфат калия + хелат железа) на 46 литров.`;
     });
-    
-    updateChartsAndAdvice();
+
+    // Калькулятор экономии воды
+    document.getElementById('calcWaterBtn').addEventListener('click', () => {
+        let area = parseFloat(document.getElementById('areaInput').value);
+        if(isNaN(area)) area = 2;
+        // Для обычного огорода: ~300 литров на м² за сезон (упрощённо)
+        let normalWater = area * 300;
+        let hydroWater = normalWater * 0.1; // экономия 90%
+        let saved = normalWater - hydroWater;
+        document.getElementById('waterResult').innerHTML = `🌱 Обычный огород: ${normalWater} л за сезон.<br>💧 Гидропоника: ${hydroWater} л.<br>✅ Экономия: ${saved} литров!`;
+    });
 </script>
 </body>
 </html>
