@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>HydroClass Dual | Гидропоника 2.0</title>
-    <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -18,7 +17,6 @@
             transition: background 0.3s ease, color 0.2s ease;
             scroll-behavior: smooth;
         }
-        /* Light theme (default) */
         :root {
             --bg: #f0f9f4;
             --surface: #ffffff;
@@ -53,9 +51,8 @@
             padding: 0 28px;
         }
         section {
-            padding: 80px 0;
+            padding: 70px 0;
         }
-        /* Glassmorph navbar */
         .navbar {
             position: sticky;
             top: 0;
@@ -120,6 +117,7 @@
             box-shadow: var(--card-shadow);
             transition: all 0.3s;
             border: 1px solid var(--border);
+            margin-bottom: 24px;
         }
         .photo-placeholder {
             background: var(--surface-soft);
@@ -214,6 +212,11 @@
             opacity: 1;
             transform: translateY(0);
         }
+        .slogan {
+            font-size: 1.2rem;
+            font-style: italic;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -237,16 +240,77 @@
         <div class="container">
             <span class="badge"><i class="fas fa-flask"></i> DWC 2.0 • 2 ящика × 46л</span>
             <h1>Два бака — <span class="gradient-text">бесконечные эксперименты</span><br>Клубника + салаты или A/B тесты</h1>
-            <p style="font-size: 1.2rem; max-width: 700px;">Первая посадка: 2 апреля 2026. Автоматические циклы, фотоотчёт, полный контроль параметров.</p>
-            <div style="display: flex; gap: 25px; margin-top: 30px; flex-wrap: wrap;">
+            <p style="font-size: 1.2rem; max-width: 700px;">Первая посадка: <strong>2 апреля 2026</strong>. Автоматические циклы, фотоотчёт, полный контроль параметров.</p>
+            <div style="display: flex; gap: 30px; margin-top: 30px; flex-wrap: wrap;">
                 <div><strong>92 литра</strong><br>общий объём</div>
                 <div><strong>24 горшка</strong><br>агровата</div>
                 <div><strong>2 насоса</strong><br>независимые линии</div>
+                <div><strong>5000 лм</strong><br>полный спектр</div>
+            </div>
+            <div class="slogan">💡 «Один ящик — рабочая лошадка, второй — полигон для экспериментов»</div>
+        </div>
+    </section>
+
+    <!-- Концепция двух ящиков + текстовая история -->
+    <section class="fade-up">
+        <div class="container">
+            <div class="card">
+                <h2><i class="fas fa-microchip"></i> Как мы собирали установку</h2>
+                <p><strong>🔧 Ящики:</strong> Купили в строительном магазине два пластиковых контейнера по 46 литров. Перекрасили в чёрный аэрозольной краской, чтобы свет не проникал к корням — это предотвращает рост водорослей. В крышках просверлили отверстия под 24 горшочка.</p>
+                <p><strong>🌀 Кулеры:</strong> Сняли со старого компьютера. Один (нижний) нагнетает воздух прямо в раствор — корни получают кислород. Второй (верхний) выдувает влажный воздух из зоны растений, предотвращая плесень.</p>
+                <p><strong>💡 Лампы:</strong> Заказали с OZON. 4 светодиодные панели полного спектра, 48 Вт каждая, суммарно 5000 люмен. Расстояние до горшков — 40 см. Почему 40? Это золотая середина: достаточно света для фотосинтеза, но листья не перегреваются.</p>
+                <p><strong>🔬 Питание:</strong> Для первого запуска решили не рисковать с самодельным раствором. Купили готовый комплекс А и В (универсальный для салатов). Вода — из-под крана, отстаивалась 24 часа, чтобы улетучился хлор.</p>
+                <p><strong>⏳ Время сборки:</strong> Работали по чуть-чуть около 2 месяцев. Параллельно с учёбой, 2-3 раза в неделю. Идея и реализация — авторские, для ВСОШ.</p>
+                <p><strong>📦 Трудности:</strong> Только одна — не хватило краски на первый раз, пришлось докупать. Всё остальное заработало с первого включения.</p>
             </div>
         </div>
     </section>
 
-    <!-- Умный таймер + прелоадер -->
+    <!-- Сорта и эксперимент -->
+    <section class="fade-up">
+        <div class="container">
+            <h2>🌱 Эксперимент с сортами</h2>
+            <div class="grid-2cols">
+                <div class="card">
+                    <i class="fas fa-seedling"></i>
+                    <h3>Какие сорта посадили?</h3>
+                    <ul style="margin-left: 20px;">
+                        <li>Московский (проверенный временем)</li>
+                        <li>Базилик (ароматный и быстрорастущий)</li>
+                        <li>Гранд (крупные листья)</li>
+                        <li>Десерт (сладковатый привкус)</li>
+                        <li>Кружевница (декоративный и урожайный)</li>
+                    </ul>
+                    <p style="margin-top: 16px;">🎯 <strong>Цель:</strong> найти самые урожайные и вкусные сорта, чтобы потом продавать учителям в школьную столовую.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-question-circle"></i>
+                    <h3>Почему агровата?</h3>
+                    <p>Агровата — стерильный субстрат, который не содержит болезней и вредителей. Корни легко прорастают, получают достаточно кислорода и влаги. В отличие от почвы, не нужно бороться с сорняками.</p>
+                    <h3 style="margin-top: 20px;">📏 Почему 40 см от ламп?</h3>
+                    <p>При таком расстоянии свет покрывает всю площадь ящиков равномерно, а тепловое излучение не перегревает листья. Консультировались с онлайн-агрономами и гидропонными форумами.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Фотозоны -->
+    <section id="system" class="fade-up">
+        <div class="container">
+            <h2>📸 Фотогалерея установки</h2>
+            <div class="grid-2cols">
+                <div class="card"><h3>Ящики + покраска</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+ящиков+тут" alt="Ящики"><span class="caption">Два чёрных ящика, светоотражающая плёнка внутри</span></div></div>
+                <div class="card"><h3>Фитолампы 48 Вт</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+ламп+тут" alt="Лампы"><span class="caption">4 лампы полного спектра, 5000 лм</span></div></div>
+                <div class="card"><h3>Кулеры (вдув/выдув)</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+кулеров+тут" alt="Кулеры"><span class="caption">Нижний – аэрация, верхний – вентиляция</span></div></div>
+                <div class="card"><h3>Горшочки + агровата</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+горшков+тут" alt="Горшки"><span class="caption">24 стаканчика, семена салатов и базилика</span></div></div>
+                <div class="card"><h3>Корни в DWC</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+корней+тут" alt="Корни"><span class="caption">Белые здоровые корни</span></div></div>
+                <div class="card"><h3>Салаты и базилик</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+салатов+тут" alt="Салаты"><span class="caption">Московский, Гранд, Кружевница</span></div></div>
+            </div>
+            <p class="caption" style="margin-top: 20px;">📌 Чтобы заменить фото: нажми на карандаш ✏️ при редактировании файла и поменяй ссылку в <code>src="..."</code> на прямую ссылку с imgbb.com</p>
+        </div>
+    </section>
+
+    <!-- Умный таймер -->
     <section class="fade-up">
         <div class="container" style="text-align: center;">
             <h2>⏳ До следующего урожая</h2>
@@ -258,56 +322,11 @@
         </div>
     </section>
 
-    <!-- Фотозоны: система, лампы, кулеры -->
-    <section id="system" class="fade-up">
-        <div class="container">
-            <h2>⚙️ Инженерная сборка</h2>
-            <div class="grid-2cols">
-                <div class="card">
-                    <i class="fas fa-box" style="font-size: 2rem;"></i>
-                    <h3>Ящики + покраска</h3>
-                    <div class="photo-placeholder">
-                        <!-- !!! ВСТАВЬ ССЫЛКУ НА ФОТО ЯЩИКОВ !!! -->
-                        <img src="https://placehold.co/600x400/2a5f53/white?text=Фото+ящиков+тут" alt="Ящики гидропоники">
-                        <span class="caption">Два чёрных ящика, светоотражающая плёнка</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <i class="fas fa-lightbulb"></i>
-                    <h3>Фитолампы 48 Вт</h3>
-                    <div class="photo-placeholder">
-                        <!-- !!! ССЫЛКА НА ФОТО ЛАМП !!! -->
-                        <img src="https://placehold.co/600x400/2a5f53/white?text=Фото+ламп+полного+спектра" alt="Лампы LED">
-                        <span class="caption">4 лампы, 5000 лм, расстояние 40 см</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <i class="fas fa-fan"></i>
-                    <h3>Кулеры (вдув/выдув)</h3>
-                    <div class="photo-placeholder">
-                        <!-- !!! ССЫЛКА НА ФОТО КУЛЕРОВ !!! -->
-                        <img src="https://placehold.co/600x400/2a5f53/white?text=Кулеры+от+ПК" alt="Кулеры">
-                        <span class="caption">Нижний – аэрация раствора, верхний – вентиляция</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <i class="fas fa-seedling"></i>
-                    <h3>Горшочки + агровата</h3>
-                    <div class="photo-placeholder">
-                        <!-- !!! ССЫЛКА НА ФОТО ГОРШКОВ !!! -->
-                        <img src="https://placehold.co/600x400/2a5f53/white?text=Посадка+в+агровату" alt="Агровата">
-                        <span class="caption">24 стаканчика, семена салатов и базилика</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Живой дневник 6 недель с фото -->
+    <!-- Живой дневник 6 недель -->
     <section id="diary" class="fade-up">
         <div class="container">
             <h2><i class="fas fa-book-open"></i> Дневник проекта</h2>
-            <p>Каждую неделю новое фото и заметки. Заменяй ссылки и текст.</p>
+            <p>Каждую неделю новое фото и заметки. Редактируй ссылки и текст прямо в коде.</p>
             <div id="diaryRoot">
                 <div class="diary-week"><h3>Неделя 1 (2–8 апреля)</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+1" alt="week1"><span class="caption">Всходы, первые корешки</span></div><p>Семена проклюнулись, корни показались из агроваты.</p></div>
                 <div class="diary-week"><h3>Неделя 2 (9–15 апреля)</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+2" alt="week2"><span class="caption">Рост листьев</span></div><p>Появились настоящие листья, EC 1.0.</p></div>
@@ -316,7 +335,6 @@
                 <div class="diary-week"><h3>Неделя 5 (30 апреля – 6 мая)</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+5" alt="week5"><span class="caption">Урожай!</span></div><p>Срезали первые салаты, продали учителям.</p></div>
                 <div class="diary-week"><h3>Неделя 6 (7–13 мая)</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+6" alt="week6"><span class="caption">Новый цикл</span></div><p>Замена раствора, новые семена клубники.</p></div>
             </div>
-            <div class="small-note" style="margin-top: 20px;">📌 Чтобы обновить фото — замени ссылку в атрибуте src="..." на прямую ссылку с imgbb.com</div>
         </div>
     </section>
 
@@ -330,14 +348,6 @@
                 <p id="ecResult" style="margin-top: 20px; font-weight: 600;"></p>
                 <div class="caption">Для 46 л воды (один бак). Универсальная формула: на 0.1 EC ~ 8 мл комплекса А+В.</div>
             </div>
-        </div>
-    </section>
-
-    <!-- Доп. блок корни / салаты -->
-    <section class="fade-up">
-        <div class="container grid-2cols">
-            <div class="card"><i class="fas fa-root"></i><h3>Зона корней</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+корней" alt="корни"><span class="caption">Белые здоровые корни в DWC</span></div></div>
-            <div class="card"><i class="fas fa-apple-alt"></i><h3>Салаты и базилик</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+салатов" alt="салаты"><span class="caption">Московский, Гранд, Кружевница</span></div></div>
         </div>
     </section>
 </main>
@@ -358,7 +368,7 @@
     }, { threshold: 0.1 });
     faders.forEach(el => obs.observe(el));
 
-    // ТЕМНАЯ ТЕМА + сохранение
+    // Тёмная тема + сохранение
     const themeToggle = document.getElementById('themeToggle');
     if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark');
     themeToggle.addEventListener('click', () => {
@@ -366,19 +376,16 @@
         localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
     });
 
-    // ЦИКЛЫ: первый запуск 24ч подготовки, затем 30-дневные циклы, в последние 24ч - прелоадер
+    // Циклы: первый запуск 24ч подготовки, затем 30-дневные циклы, в последние 24ч - прелоадер
     let startDate = new Date(2026, 3, 2, 12, 0, 0); // 2 апреля 2026 12:00
-    let currentCycle = 0;
     let cycleEndDates = [];
 
     function buildCycles() {
         cycleEndDates = [];
-        // фаза 0: первый запуск (24ч подготовки)
         let phase0End = new Date(startDate.getTime() + 24*60*60*1000);
         cycleEndDates.push({ type: 'prep', end: phase0End, cycleNum: 0 });
-        // затем 30-дневные циклы
         let last = phase0End;
-        for(let i=1; i<=50; i++) { // бесконечно
+        for(let i=1; i<=50; i++) {
             let next = new Date(last.getTime() + 30*24*60*60*1000);
             cycleEndDates.push({ type: 'harvest', end: next, cycleNum: i });
             last = next;
@@ -418,8 +425,6 @@
         const preloaderDiv = document.getElementById('preloaderZone');
         
         if(remaining <= 0) {
-            // переход к следующему этапу принудительно (перестроим циклы от текущего момента)
-            if(current.phase === 'prep') startDate = new Date(); // сместим начало
             buildCycles();
             updateTimerAndPreloader();
             return;
@@ -440,7 +445,6 @@
             phaseMsg.innerText = `🌿 Цикл №${current.cycleNum} — до сбора урожая`;
             
             if(isLast24Hours(current.endDate)) {
-                // Показываем прелоадер с фразами
                 if(phraseInterval === null) {
                     let idx = 0;
                     const updatePhrase = () => {
