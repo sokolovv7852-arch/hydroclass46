@@ -1,568 +1,479 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>HydroClass 46 | Гидропоника в школе</title>
-  <!-- Google Fonts + Preconnect -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <!-- Font Awesome 6 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <!-- Chart.js CDN для графика параметров -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background: #f0f9f4;
-      font-family: 'Inter', 'Space Grotesk', sans-serif;
-      color: #0b2f26;
-      line-height: 1.4;
-      scroll-behavior: smooth;
-      overflow-x: hidden;
-    }
-
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #c8e0d6;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #2a7f4a;
-      border-radius: 10px;
-    }
-
-    .container {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 28px;
-    }
-
-    section {
-      padding: 90px 0;
-    }
-
-    /* анимации по умолчанию (появляются при скролле) */
-    .fade-up {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.7s ease;
-    }
-    .fade-up.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .badge {
-      display: inline-block;
-      background: rgba(42, 127, 74, 0.12);
-      color: #1b6e42;
-      padding: 6px 18px;
-      border-radius: 60px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.2px;
-      backdrop-filter: blur(2px);
-    }
-
-    h1, h2, h3 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
-
-    h2 {
-      font-size: 2.6rem;
-      margin-bottom: 1rem;
-      color: #0a352a;
-    }
-
-    .gradient-text {
-      background: linear-gradient(135deg, #198f4c, #3be08f);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    /* header */
-    .navbar {
-      position: sticky;
-      top: 0;
-      background: rgba(255, 255, 255, 0.94);
-      backdrop-filter: blur(16px);
-      z-index: 100;
-      border-bottom: 1px solid #cbe5db;
-      padding: 14px 0;
-    }
-    .nav-flex {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
-    .logo-area {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .school-emblem {
-      width: 48px;
-      height: 48px;
-      background: #eef3e9;
-      border-radius: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.8rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      transition: 0.2s;
-    }
-    .logo {
-      font-size: 1.7rem;
-      font-weight: 800;
-      background: linear-gradient(125deg, #19794a, #36d48c);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-      align-items: center;
-    }
-    .nav-links a {
-      text-decoration: none;
-      font-weight: 500;
-      color: #1c443b;
-      transition: 0.2s;
-    }
-    .nav-links a:hover { color: #1b8c4e; }
-
-    /* герб школы заглушка — замените на реальную картинку */
-    .real-emblem-img {
-      width: 48px;
-      height: 48px;
-      object-fit: contain;
-      border-radius: 50%;
-      background: #fff;
-    }
-
-    /* hero */
-    .hero {
-      padding: 50px 0 40px;
-    }
-    .hero-grid {
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-      flex-wrap: wrap;
-    }
-    .hero-content h1 {
-      font-size: 3.2rem;
-      line-height: 1.2;
-      margin: 20px 0 16px;
-    }
-    .hero-desc {
-      font-size: 1.1rem;
-      color: #2a5f53;
-      max-width: 90%;
-    }
-    .hero-stats {
-      display: flex;
-      gap: 2rem;
-      margin-top: 30px;
-    }
-    .stat-item h3 {
-      font-size: 1.8rem;
-    }
-    .hero-img-placeholder {
-      background: #d4ecdf;
-      border-radius: 48px;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1);
-    }
-    .hero-img-placeholder i {
-      font-size: 7rem;
-      color: #2a7f4a;
-    }
-
-    /* карточки технологий/параметры */
-    .cards-grid, .benefits-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-      gap: 30px;
-      margin-top: 40px;
-    }
-    .card {
-      background: white;
-      border-radius: 32px;
-      padding: 28px 22px;
-      transition: all 0.3s;
-      box-shadow: 0 10px 25px -12px rgba(0,0,0,0.05);
-      border: 1px solid rgba(0,0,0,0.02);
-    }
-    .card:hover { transform: translateY(-6px); box-shadow: 0 25px 30px -18px #198f4c30; }
-    .card-icon { font-size: 2.2rem; color: #1b8c4e; margin-bottom: 1rem; }
-
-    /* системная секция */
-    .system-showcase {
-      background: #e2f0ea;
-      border-radius: 48px;
-      padding: 48px 40px;
-      margin-top: 20px;
-    }
-    .sys-flex {
-      display: flex;
-      gap: 40px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-    .sys-list {
-      list-style: none;
-      margin-top: 20px;
-    }
-    .sys-list li { margin: 14px 0; display: flex; gap: 12px; align-items: center; font-weight: 500; }
-    .sys-list i { color: #1b8c4e; }
-
-    /* таймер + калькулятор */
-    .timer-card, .calc-card {
-      background: #ffffffdd;
-      backdrop-filter: blur(4px);
-      border-radius: 40px;
-      padding: 25px;
-      text-align: center;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.03);
-      border: 1px solid #cde0d7;
-    }
-    .flex-tools {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 30px;
-      margin-top: 30px;
-    }
-    .flex-tools > div {
-      flex: 1;
-      min-width: 250px;
-    }
-    #countdown {
-      font-size: 2.5rem;
-      font-weight: 800;
-      font-family: monospace;
-      background: #1a463b;
-      display: inline-block;
-      padding: 10px 24px;
-      border-radius: 60px;
-      color: white;
-      margin-top: 15px;
-    }
-    input, button {
-      border-radius: 60px;
-      border: none;
-      padding: 12px 20px;
-      font-size: 1rem;
-    }
-    input {
-      background: #f1f9f4;
-      border: 1px solid #c0ddcf;
-      width: 140px;
-      text-align: center;
-    }
-    .calc-btn {
-      background: #1b8c4e;
-      color: white;
-      cursor: pointer;
-      padding: 12px 24px;
-      font-weight: 600;
-    }
-
-    /* дневник */
-    .diary-entry {
-      background: white;
-      border-radius: 32px;
-      padding: 20px;
-      margin-bottom: 20px;
-      border-left: 6px solid #2bda8c;
-    }
-    /* Q&A стиль */
-    .qa-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px,1fr));
-      gap: 24px;
-      margin-top: 40px;
-    }
-    .qa-item {
-      background: #ffffffcc;
-      backdrop-filter: blur(4px);
-      border-radius: 28px;
-      padding: 24px;
-      transition: 0.2s;
-    }
-    .qa-item i {
-      color: #1b8c4e;
-      margin-right: 12px;
-    }
-    .small-note {
-      font-size: 0.8rem;
-      color: #4c7b6b;
-      margin-top: 12px;
-    }
-
-    footer {
-      background: #08261f;
-      color: #cfe6df;
-      padding: 50px 0 30px;
-      border-radius: 40px 40px 0 0;
-      margin-top: 40px;
-    }
-
-    @media (max-width: 800px) {
-      h2 { font-size: 2rem; }
-      .hero-content h1 { font-size: 2.2rem; }
-      section { padding: 60px 0; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>HydroClass Dual | Гидропоника 2.0</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', 'Space Grotesk', sans-serif;
+            transition: background 0.3s ease, color 0.2s ease;
+            scroll-behavior: smooth;
+        }
+        /* Light theme (default) */
+        :root {
+            --bg: #f0f9f4;
+            --surface: #ffffff;
+            --surface-soft: #eef3ef;
+            --text: #0b2f26;
+            --text-muted: #2a5f53;
+            --border: #cbe5db;
+            --card-shadow: 0 12px 25px -12px rgba(0,0,0,0.05);
+            --accent: #1b8c4e;
+            --accent-glow: #198f4c30;
+            --header-bg: rgba(255, 255, 255, 0.94);
+        }
+        body.dark {
+            --bg: #0a1f1a;
+            --surface: #1a2f28;
+            --surface-soft: #1e3a31;
+            --text: #e0f0e8;
+            --text-muted: #b8d5ca;
+            --border: #2c5a4a;
+            --card-shadow: 0 12px 25px -8px rgba(0,0,0,0.4);
+            --accent: #3be08f;
+            --accent-glow: #2bda8c30;
+            --header-bg: rgba(10, 30, 25, 0.96);
+        }
+        body {
+            background: var(--bg);
+            color: var(--text);
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 28px;
+        }
+        section {
+            padding: 80px 0;
+        }
+        /* Glassmorph navbar */
+        .navbar {
+            position: sticky;
+            top: 0;
+            background: var(--header-bg);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+            padding: 14px 0;
+        }
+        .nav-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .logo {
+            font-size: 1.7rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1b8c4e, #3be08f);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .theme-toggle {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 60px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .badge {
+            display: inline-block;
+            background: var(--accent)20;
+            color: var(--accent);
+            padding: 6px 18px;
+            border-radius: 60px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        h1, h2, h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #1b8c4e, #3be08f);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .card {
+            background: var(--surface);
+            border-radius: 32px;
+            padding: 28px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s;
+            border: 1px solid var(--border);
+        }
+        .photo-placeholder {
+            background: var(--surface-soft);
+            border-radius: 28px;
+            padding: 12px;
+            text-align: center;
+            margin: 16px 0;
+        }
+        .photo-placeholder img {
+            max-width: 100%;
+            border-radius: 24px;
+            object-fit: cover;
+        }
+        .caption {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+            display: block;
+        }
+        .timer-giant {
+            font-size: 2.8rem;
+            font-weight: 800;
+            font-family: monospace;
+            background: var(--accent);
+            color: white;
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 60px;
+            margin-top: 12px;
+        }
+        .preloader-phrases {
+            background: var(--surface);
+            border-radius: 48px;
+            padding: 24px;
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 600;
+            animation: pulseGlow 1.2s infinite;
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 var(--accent-glow); }
+            100% { box-shadow: 0 0 0 12px transparent; }
+        }
+        .grid-2cols {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .diary-week {
+            border-left: 4px solid var(--accent);
+            padding-left: 20px;
+            margin-bottom: 32px;
+        }
+        footer {
+            background: var(--surface-soft);
+            border-radius: 40px 40px 0 0;
+            padding: 50px 0 30px;
+            margin-top: 40px;
+        }
+        @media (max-width: 780px) {
+            h2 { font-size: 1.9rem; }
+            .timer-giant { font-size: 1.8rem; }
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            margin: 0 12px;
+            font-weight: 500;
+        }
+        button, .calc-btn {
+            background: var(--accent);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        input {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            padding: 10px 16px;
+            color: var(--text);
+        }
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
 </head>
 <body>
-
 <header class="navbar">
-  <div class="container nav-flex">
-    <div class="logo-area">
-      <div class="school-emblem" id="schoolEmblem">
-        <!-- герб школы заглушка: иконка + надпись, можно заменить картинкой -->
-        <i class="fas fa-school-circle-check" style="color:#1b6e42;"></i>
-      </div>
-      <div class="logo"><i class="fas fa-leaf"></i> HydroClass 46</div>
+    <div class="container nav-flex">
+        <div class="logo"><i class="fas fa-leaf"></i> HydroClass Dual</div>
+        <div style="display: flex; gap: 20px; align-items: center;">
+            <div class="nav-links">
+                <a href="#system">Система</a>
+                <a href="#diary">Дневник</a>
+                <a href="#tools">Калькулятор</a>
+            </div>
+            <button class="theme-toggle" id="themeToggle"><i class="fas fa-sun"></i> / <i class="fas fa-moon"></i></button>
+        </div>
     </div>
-    <div class="nav-links">
-      <a href="#system">Система</a>
-      <a href="#diary">Дневник</a>
-      <a href="#qa">QA</a>
-      <a href="#tools">Калькулятор</a>
-    </div>
-  </div>
 </header>
 
 <main>
-  <!-- Hero -->
-  <section class="hero fade-up">
-    <div class="container hero-grid">
-      <div class="hero-content">
-        <span class="badge"><i class="fas fa-flask"></i> Проект 8 класса • Технология</span>
-        <h1>Глубокая вода — <span class="gradient-text">зелёный урожай</span><br>46 литров инноваций</h1>
-        <p class="hero-desc">Два герметичных ящика, 24 горшка, свет полного спектра и аэрация от кулеров ПК. Собственная гидропонная установка для выращивания салатов в школе.</p>
-        <div class="hero-stats">
-          <div class="stat-item"><h3>46 л</h3><p>объём каждого ящика</p></div>
-          <div class="stat-item"><h3>5000 лм</h3><p>световой поток</p></div>
-          <div class="stat-item"><h3>24</h3><p>растения</p></div>
+    <!-- Hero -->
+    <section class="fade-up">
+        <div class="container">
+            <span class="badge"><i class="fas fa-flask"></i> DWC 2.0 • 2 ящика × 46л</span>
+            <h1>Два бака — <span class="gradient-text">бесконечные эксперименты</span><br>Клубника + салаты или A/B тесты</h1>
+            <p style="font-size: 1.2rem; max-width: 700px;">Первая посадка: 2 апреля 2026. Автоматические циклы, фотоотчёт, полный контроль параметров.</p>
+            <div style="display: flex; gap: 25px; margin-top: 30px; flex-wrap: wrap;">
+                <div><strong>92 литра</strong><br>общий объём</div>
+                <div><strong>24 горшка</strong><br>агровата</div>
+                <div><strong>2 насоса</strong><br>независимые линии</div>
+            </div>
         </div>
-      </div>
-      <div class="hero-img-placeholder">
-        <i class="fas fa-seedling"></i>
-        <i class="fas fa-water" style="margin-left: 20px;"></i>
-        <p style="margin-top: 15px; font-weight: 500;">DWC установка<br>2 ящика + LED панели</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Параметры установки и свет -->
-  <div class="container fade-up">
-    <div class="cards-grid">
-      <div class="card"><div class="card-icon"><i class="fas fa-microchip"></i></div><h3>Кулеры 120 мм</h3><p>Нижний — вдув, верхний — выдув. Идельная вентиляция для микроклимата салатов.</p></div>
-      <div class="card"><div class="card-icon"><i class="fas fa-lightbulb"></i></div><h3>4 лампы полного спектра</h3><p>48 Вт, 240 диодов, 5000 люмен. Расстояние 40 см — выбрано для баланса фотосинтеза и тепла.</p></div>
-      <div class="card"><div class="card-icon"><i class="fas fa-fill-drip"></i></div><h3>Питание А + В</h3><p>Готовая смесь для салатов — первый запуск без риска. Вода из крана, отстоянная.</p></div>
-    </div>
-  </div>
-
-  <!-- Подробная система + отражающая плёнка -->
-  <section id="system" class="fade-up">
-    <div class="container">
-      <div class="system-showcase">
-        <div class="sys-flex">
-          <div class="sys-text">
-            <span class="badge"><i class="fas fa-drafting-compass"></i> инженерия своими руками</span>
-            <h2 style="margin: 20px 0 15px;">Как мы собрали эту систему</h2>
-            <p>Ящики купили в строительном магазине, перекрасили в чёрный аэрозольной краской, чтобы свет не проходил к корням. В крышках просверлили отверстия под 24 горшка с агроватой. Кулеры сняли со старого ПК — нижний нагнетает воздух в раствор, верхний выдувает влажность. Внутри наклеили светоотражающую плёнку — эффективность +30%.</p>
-            <ul class="sys-list">
-              <li><i class="fas fa-check-circle"></i> 2 ящика по 46 л (покрашены чёрным)</li>
-              <li><i class="fas fa-fan"></i> Воздух от компьютерных кулеров (бесшумно)</li>
-              <li><i class="fas fa-chart-line"></i> Насос с двумя трубками — равномерная подача раствора</li>
-              <li><i class="fas fa-lightbulb"></i> Лампы с OZON — полный спектр 5000 лм</li>
-            </ul>
-            <p class="small-note" style="margin-top: 16px;">⭐ Работа велась около 2 месяцев (параллельно с учёбой), сборка поэтапная. Все этапы задокументированы.</p>
-          </div>
-          <div class="sys-image" style="text-align:center; background:#d9efdf; border-radius: 36px; padding: 28px;">
-            <i class="fas fa-box-open" style="font-size: 4rem; color:#2a7f4a;"></i>
-            <i class="fas fa-arrow-down" style="display:block; margin: 10px 0;"></i>
-            <i class="fas fa-seedling" style="font-size: 3rem;"></i>
-            <p><strong>DWC — глубоководная культура</strong><br>Корни в питательном растворе, постоянная аэрация.</p>
-          </div>
+    <!-- Умный таймер + прелоадер -->
+    <section class="fade-up">
+        <div class="container" style="text-align: center;">
+            <h2>⏳ До следующего урожая</h2>
+            <div id="timerContainer">
+                <div class="timer-giant" id="countdownDisplay">-- дн -- ч -- мин</div>
+                <div id="phaseMessage" style="margin-top: 18px; font-weight: 500;"></div>
+            </div>
+            <div id="preloaderZone" style="margin-top: 25px;"></div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Сорта растений + почему агровата / 40см -->
-  <div class="container fade-up">
-    <div class="cards-grid" style="margin-bottom: 20px;">
-      <div class="card">
-        <div class="card-icon"><i class="fas fa-seedling"></i></div>
-        <h3>Эксперимент с сортами</h3>
-        <p>Московский, Базилик, Гранд, Десерт, Кружевница — посадили 5 видов, чтобы найти лучший для продажи учителям. Салаты быстро растут и дают ранний урожай.</p>
-      </div>
-      <div class="card">
-        <div class="card-icon"><i class="fas fa-leaf"></i></div>
-        <h3>Почему агровата?</h3>
-        <p>Стерильный субстрат, отличная аэрация корней и нейтральный pH. Не нужна почва, нет вредителей — идеально для гидропоники.</p>
-      </div>
-      <div class="card">
-        <div class="card-icon"><i class="fas fa-chart-simple"></i></div>
-        <h3>40 см от ламп — не случайно</h3>
-        <p>Рекомендованное расстояние для светодиодов полного спектра мощностью 48 Вт: достаточно света для фотосинтеза, но без перегрева листьев. Эмпирическое правило + консультация с онлайн-агрономами.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Таймер + Калькулятор питательного раствора -->
-  <div class="container fade-up" id="tools">
-    <div class="flex-tools">
-      <div class="timer-card">
-        <i class="fas fa-calendar-alt" style="font-size: 2rem; color:#1b8c4e;"></i>
-        <h3 style="margin: 10px 0;">⏱️ До первого урожая</h3>
-        <p>Старт: 2 апреля 2026 · салатам нужно ≈ 30-35 дней</p>
-        <div id="countdown">-- дн -- ч -- мин</div>
-      </div>
-      <div class="calc-card">
-        <i class="fas fa-calculator" style="font-size: 2rem;"></i>
-        <h3>Калькулятор питательного раствора</h3>
-        <p>Объём воды: <strong>46 л</strong> (один ящик)</p>
-        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 15px 0;">
-          <input type="number" id="targetEC" placeholder="Желаемый EC (мСм)" step="0.1" value="1.2">
-          <button class="calc-btn" id="calcNutrientBtn">Рассчитать A/B</button>
+    <!-- Фотозоны: система, лампы, кулеры -->
+    <section id="system" class="fade-up">
+        <div class="container">
+            <h2>⚙️ Инженерная сборка</h2>
+            <div class="grid-2cols">
+                <div class="card">
+                    <i class="fas fa-box" style="font-size: 2rem;"></i>
+                    <h3>Ящики + покраска</h3>
+                    <div class="photo-placeholder">
+                        <!-- !!! ВСТАВЬ ССЫЛКУ НА ФОТО ЯЩИКОВ !!! -->
+                        <img src="https://placehold.co/600x400/2a5f53/white?text=Фото+ящиков+тут" alt="Ящики гидропоники">
+                        <span class="caption">Два чёрных ящика, светоотражающая плёнка</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <i class="fas fa-lightbulb"></i>
+                    <h3>Фитолампы 48 Вт</h3>
+                    <div class="photo-placeholder">
+                        <!-- !!! ССЫЛКА НА ФОТО ЛАМП !!! -->
+                        <img src="https://placehold.co/600x400/2a5f53/white?text=Фото+ламп+полного+спектра" alt="Лампы LED">
+                        <span class="caption">4 лампы, 5000 лм, расстояние 40 см</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <i class="fas fa-fan"></i>
+                    <h3>Кулеры (вдув/выдув)</h3>
+                    <div class="photo-placeholder">
+                        <!-- !!! ССЫЛКА НА ФОТО КУЛЕРОВ !!! -->
+                        <img src="https://placehold.co/600x400/2a5f53/white?text=Кулеры+от+ПК" alt="Кулеры">
+                        <span class="caption">Нижний – аэрация раствора, верхний – вентиляция</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <i class="fas fa-seedling"></i>
+                    <h3>Горшочки + агровата</h3>
+                    <div class="photo-placeholder">
+                        <!-- !!! ССЫЛКА НА ФОТО ГОРШКОВ !!! -->
+                        <img src="https://placehold.co/600x400/2a5f53/white?text=Посадка+в+агровату" alt="Агровата">
+                        <span class="caption">24 стаканчика, семена салатов и базилика</span>
+                    </div>
+                </div>
+            </div>
         </div>
-        <p id="calcResult" style="font-weight: 500; background: #e9f3ef; border-radius: 40px; padding: 8px;">Нажмите "Рассчитать", чтобы узнать дозировку</p>
-        <div class="small-note">⚡ Используем готовую серию А и В (гидропонные удобрения). Стартовый EC 0.8 → затем 1.2-1.4.</div>
-      </div>
-    </div>
-  </div>
+    </section>
 
-  <!-- Дневник наблюдений (обновляется раз в неделю) -->
-  <section id="diary" class="fade-up">
-    <div class="container">
-      <span class="badge"><i class="fas fa-pen-fancy"></i> живой дневник</span>
-      <h2>Что происходит с растениями</h2>
-      <div class="diary-entry">
-        <i class="fas fa-calendar-week"></i> <strong>2 апреля 2026 — Запуск!</strong>
-        <p>✔️ Залили воду, добавили питательную смесь А и В (начальная доза). Установили лампы, включили кулеры. Семена московского, базилика и гранда посажены в агровату. Герметичность отличная, светоотражение работает. Температура раствора 20°C.</p>
-        <div class="small-note">📸 Фото установки скоро добавлю</div>
-      </div>
-      <div class="diary-entry">
-        <i class="fas fa-calendar-week"></i> <strong>5-7 апреля — первые всходы ожидаем</strong>
-        <p>Обновление будет: как только появятся корешки — внесу новые фото и данные pH. Планируем замерять EC каждые 2 дня.</p>
-      </div>
-      <div class="diary-entry">
-        <i class="fas fa-chart-line"></i> <strong>Параметры сейчас:</strong> pH ~6.1 (в норме), EC ~0.9, температура в боксе 23°C. Кулеры работают стабильно.
-      </div>
-      <div class="small-note" style="margin-top: 12px;">📌 Дневник обновляется раз в неделю, скоро появятся фото листьев и корней.</div>
-    </div>
-  </section>
+    <!-- Живой дневник 6 недель с фото -->
+    <section id="diary" class="fade-up">
+        <div class="container">
+            <h2><i class="fas fa-book-open"></i> Дневник проекта</h2>
+            <p>Каждую неделю новое фото и заметки. Заменяй ссылки и текст.</p>
+            <div id="diaryRoot">
+                <div class="diary-week"><h3>Неделя 1 (2–8 апреля)</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+1" alt="week1"><span class="caption">Всходы, первые корешки</span></div><p>Семена проклюнулись, корни показались из агроваты.</p></div>
+                <div class="diary-week"><h3>Неделя 2 (9–15 апреля)</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+2" alt="week2"><span class="caption">Рост листьев</span></div><p>Появились настоящие листья, EC 1.0.</p></div>
+                <div class="diary-week"><h3>Неделя 3 (16–22 апреля)</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+3" alt="week3"><span class="caption">Кущение</span></div><p>Салаты активно набирают зелёную массу.</p></div>
+                <div class="diary-week"><h3>Неделя 4 (23–29 апреля)</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+4" alt="week4"><span class="caption">Финальный рост</span></div><p>Параметры стабильны, готовимся к первому сбору.</p></div>
+                <div class="diary-week"><h3>Неделя 5 (30 апреля – 6 мая)</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+5" alt="week5"><span class="caption">Урожай!</span></div><p>Срезали первые салаты, продали учителям.</p></div>
+                <div class="diary-week"><h3>Неделя 6 (7–13 мая)</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+неделя+6" alt="week6"><span class="caption">Новый цикл</span></div><p>Замена раствора, новые семена клубники.</p></div>
+            </div>
+            <div class="small-note" style="margin-top: 20px;">📌 Чтобы обновить фото — замени ссылку в атрибуте src="..." на прямую ссылку с imgbb.com</div>
+        </div>
+    </section>
 
-  <!-- Q&A / Вопросы о системе (из ответов) -->
-  <section id="qa" class="fade-up" style="background: #f2faf6;">
-    <div class="container">
-      <span class="badge"><i class="fas fa-comments"></i> честный разговор</span>
-      <h2>Вопросы о нашей гидропонике</h2>
-      <div class="qa-grid">
-        <div class="qa-item"><i class="fas fa-paint-roller"></i> <strong>Почему перекрашивали ящики?</strong><br>➜ Чтобы свет не проникал к корням — водоросли не развиваются, корни здоровые. Краска из баллончика, два слоя.</div>
-        <div class="qa-item"><i class="fas fa-microchip"></i> <strong>Откуда кулеры?</strong><br>➜ Сняли со старого системного блока — экономия и вторая жизнь компонентам. Работают тихо, 12 В.</div>
-        <div class="qa-item"><i class="fas fa-hand-sparkles"></i> <strong>Почему агровата, а не керамзит?</strong><br>➜ Агровата удерживает влагу и кислород, корни легко прорастают. Идеально для DWC.</div>
-        <div class="qa-item"><i class="fas fa-chart-line"></i> <strong>Какие трудности были?</strong><br>➜ Не хватило краски — докупали. В остальном всё работало с первого включения. Главное — подготовить отверстия под горшки герметично.</div>
-        <div class="qa-item"><i class="fas fa-apple-alt"></i> <strong>Зачем столько сортов?</strong><br>➜ Эксперимент: найдём самые урожайные и вкусные, чтобы продавать учителям в столовую. Базилик, московский, кружевница.</div>
-        <div class="qa-item"><i class="fas fa-water"></i> <strong>Вода из крана? Не боитесь хлора?</strong><br>➜ Отстаивали 24 часа, хлор улетучился. pH скорректируем при необходимости.</div>
-        <div class="qa-item"><i class="fas fa-store"></i> <strong>Продажа салатов?</strong><br>➜ Да, планируем реализовывать свежие салаты учителям. На лето систему законсервируем.</div>
-        <div class="qa-item"><i class="fas fa-school"></i> <strong>Проект индивидуальный?</strong><br>➜ Идея, сборка и дизайн — авторские. Помогали советами одноклассники, но всю техническую часть выполнил я (для ВСОШ и защиты).</div>
-      </div>
-      <div class="small-note" style="margin-top: 30px; text-align: center;">🚀 2 апреля 2026 — официальный запуск. Ждём урожай в начале мая!</div>
-    </div>
-  </section>
+    <!-- Калькулятор EC -->
+    <section id="tools" class="fade-up">
+        <div class="container">
+            <div class="card" style="text-align: center;">
+                <h3><i class="fas fa-chart-line"></i> Калькулятор удобрений (по EC-метру)</h3>
+                <p>Текущий EC (мСм): <input type="number" id="currentEc" step="0.1" value="0.6" style="width: 100px;"> → Желаемый EC: <input type="number" id="targetEcVal" step="0.1" value="1.2" style="width: 100px;"></p>
+                <button id="calcEcBtn" class="calc-btn">Рассчитать добавку</button>
+                <p id="ecResult" style="margin-top: 20px; font-weight: 600;"></p>
+                <div class="caption">Для 46 л воды (один бак). Универсальная формула: на 0.1 EC ~ 8 мл комплекса А+В.</div>
+            </div>
+        </div>
+    </section>
 
-  <!-- Слоган и атмосфера -->
-  <div class="container fade-up" style="text-align: center; margin-bottom: 30px;">
-    <div class="card" style="background: linear-gradient(125deg, #e1f3ea, white);">
-      <i class="fas fa-quote-right" style="font-size: 2rem; opacity: 0.6;"></i>
-      <h3 style="margin: 15px 0;">«Корни в воде — урожай в столовой»</h3>
-      <p>HydroClass 46 — будущее школьного овощеводства. Сделано с душой и технологиями.</p>
-      <div class="small-note">#ВСОШ #Технология #Гидропоника</div>
-    </div>
-  </div>
+    <!-- Доп. блок корни / салаты -->
+    <section class="fade-up">
+        <div class="container grid-2cols">
+            <div class="card"><i class="fas fa-root"></i><h3>Зона корней</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+корней" alt="корни"><span class="caption">Белые здоровые корни в DWC</span></div></div>
+            <div class="card"><i class="fas fa-apple-alt"></i><h3>Салаты и базилик</h3><div class="photo-placeholder"><img src="https://placehold.co/600x400/2a5f53/white?text=Фото+салатов" alt="салаты"><span class="caption">Московский, Гранд, Кружевница</span></div></div>
+        </div>
+    </section>
 </main>
 
 <footer>
-  <div class="container">
-    <div class="footer-grid" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 30px;">
-      <div><i class="fas fa-leaf"></i> HydroClass 46 · Школьный проект 8 класса</div>
-      <div>2 апреля 2026 · Запуск установки DWC</div>
-      <div><i class="fas fa-qrcode"></i> QR-код на сайт скоро на стенде</div>
+    <div class="container" style="text-align: center;">
+        <p><i class="fas fa-seedling"></i> HydroClass Dual — два ящика, бесконечные эксперименты</p>
+        <p>Первая посадка: 2 апреля 2026 • Автоциклы • Следующий урожай через 30 дней</p>
+        <p style="margin-top: 16px;">✨ Школьный проект, 8 класс. ВСОШ | Технология</p>
     </div>
-    <div class="copyright" style="margin-top: 35px; text-align: center; font-size: 0.8rem;">
-      <p>Проект по технологии · Глубокая гидропонная культура · Салаты, базилик, микроферма</p>
-    </div>
-  </div>
 </footer>
 
 <script>
-  // анимации при скролле
-  const fadeElements = document.querySelectorAll('.fade-up');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
+    // Анимация появления
+    const faders = document.querySelectorAll('.fade-up');
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    faders.forEach(el => obs.observe(el));
+
+    // ТЕМНАЯ ТЕМА + сохранение
+    const themeToggle = document.getElementById('themeToggle');
+    if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark');
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+        localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
     });
-  }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
-  fadeElements.forEach(el => observer.observe(el));
 
-  // Таймер до урожая (2 апреля + 32 дня = ~4 мая)
-  const startDate = new Date(2026, 3, 2); // 2 апреля 2026
-  const targetDate = new Date(2026, 4, 4); // примерный сбор 4 мая (32 дня)
-  function updateCountdown() {
-    const now = new Date();
-    const diff = targetDate - now;
-    if (diff <= 0) {
-      document.getElementById('countdown').innerHTML = "Урожай готов! 🎉";
-      return;
+    // ЦИКЛЫ: первый запуск 24ч подготовки, затем 30-дневные циклы, в последние 24ч - прелоадер
+    let startDate = new Date(2026, 3, 2, 12, 0, 0); // 2 апреля 2026 12:00
+    let currentCycle = 0;
+    let cycleEndDates = [];
+
+    function buildCycles() {
+        cycleEndDates = [];
+        // фаза 0: первый запуск (24ч подготовки)
+        let phase0End = new Date(startDate.getTime() + 24*60*60*1000);
+        cycleEndDates.push({ type: 'prep', end: phase0End, cycleNum: 0 });
+        // затем 30-дневные циклы
+        let last = phase0End;
+        for(let i=1; i<=50; i++) { // бесконечно
+            let next = new Date(last.getTime() + 30*24*60*60*1000);
+            cycleEndDates.push({ type: 'harvest', end: next, cycleNum: i });
+            last = next;
+        }
     }
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (86400000)) / 3600000);
-    const minutes = Math.floor((diff % 3600000) / 60000);
-    document.getElementById('countdown').innerHTML = `${days} дн ${hours} ч ${minutes} мин`;
-  }
-  updateCountdown();
-  setInterval(updateCountdown, 60000);
+    buildCycles();
 
-  // Калькулятор питательного раствора (упрощённая логика для A/B)
-  const calcBtn = document.getElementById('calcNutrientBtn');
-  const resultSpan = document.getElementById('calcResult');
-  calcBtn.addEventListener('click', () => {
-    let ec = parseFloat(document.getElementById('targetEC').value);
-    if (isNaN(ec)) ec = 1.2;
-    let baseEC = 0.3; // вода из под крана после отстаивания
-    let needed = Math.max(0.2, ec - baseEC);
-    // примерная формула: для 46 л воды прирост EC на 0.1 требует ~8 мл удобрения (А+В в сумме)
-    let totalMl = (needed / 0.1) * 8;
-    let mlA = Math.round(totalMl / 2);
-    let mlB = Math.round(totalMl / 2);
-    resultSpan.innerHTML = `💧 Для 46 л воды: добавьте ≈ ${mlA} мл раствора А и ${mlB} мл раствора В. Целевой EC: ${ec.toFixed(1)} мСм. (стартовый EC ~0.3)`;
-    if (ec > 1.6) resultSpan.innerHTML += ` ⚠️ Для салатов выше 1.6 рискованно, лучше 1.2-1.4.`;
-  });
+    function getCurrentPhase() {
+        const now = new Date();
+        for(let i=0; i<cycleEndDates.length; i++) {
+            if(now < cycleEndDates[i].end) {
+                let prevEnd = i===0 ? startDate : cycleEndDates[i-1].end;
+                return { phase: cycleEndDates[i].type, endDate: cycleEndDates[i].end, startDate: prevEnd, cycleIndex: i, cycleNum: cycleEndDates[i].cycleNum };
+            }
+        }
+        return { phase: 'harvest', endDate: cycleEndDates[cycleEndDates.length-1].end };
+    }
+
+    function isLast24Hours(endDate) {
+        const now = new Date();
+        const diff = endDate - now;
+        return diff <= 24*60*60*1000 && diff > 0;
+    }
+
+    const phrases = [
+        "🥗 Собираем салаты...", "💧 Проверяем pH и EC...", "🌀 Заменяем вату в стаканчиках...",
+        "🔧 Тестируем кулеры и насосы...", "🌱 Готовим новые семена...", "🚀 Запускаем следующий цикл!"
+    ];
+    let phraseInterval = null;
+
+    function updateTimerAndPreloader() {
+        const now = new Date();
+        const current = getCurrentPhase();
+        const remaining = current.endDate - now;
+        const timerDiv = document.getElementById('countdownDisplay');
+        const phaseMsg = document.getElementById('phaseMessage');
+        const preloaderDiv = document.getElementById('preloaderZone');
+        
+        if(remaining <= 0) {
+            // переход к следующему этапу принудительно (перестроим циклы от текущего момента)
+            if(current.phase === 'prep') startDate = new Date(); // сместим начало
+            buildCycles();
+            updateTimerAndPreloader();
+            return;
+        }
+        
+        const days = Math.floor(remaining / (1000*3600*24));
+        const hours = Math.floor((remaining % (86400000)) / 3600000);
+        const mins = Math.floor((remaining % 3600000) / 60000);
+        
+        if(current.phase === 'prep') {
+            timerDiv.innerText = `${days}д ${hours}ч ${mins}м`;
+            phaseMsg.innerText = '🔰 ПЕРВИЧНЫЙ ЗАПУСК: стабилизация раствора и аэрация перед посадкой';
+            preloaderDiv.innerHTML = '';
+            if(phraseInterval) clearInterval(phraseInterval);
+        } 
+        else if(current.phase === 'harvest') {
+            timerDiv.innerText = `${days}д ${hours}ч ${mins}м`;
+            phaseMsg.innerText = `🌿 Цикл №${current.cycleNum} — до сбора урожая`;
+            
+            if(isLast24Hours(current.endDate)) {
+                // Показываем прелоадер с фразами
+                if(phraseInterval === null) {
+                    let idx = 0;
+                    const updatePhrase = () => {
+                        preloaderDiv.innerHTML = `<div class="preloader-phrases"><i class="fas fa-sync-alt fa-spin"></i> ${phrases[idx % phrases.length]}</div>`;
+                        idx++;
+                    };
+                    updatePhrase();
+                    phraseInterval = setInterval(updatePhrase, 2500);
+                }
+            } else {
+                if(phraseInterval) { clearInterval(phraseInterval); phraseInterval = null; }
+                preloaderDiv.innerHTML = '';
+            }
+        }
+    }
+
+    setInterval(updateTimerAndPreloader, 1000);
+    updateTimerAndPreloader();
+
+    // Калькулятор EC
+    document.getElementById('calcEcBtn').addEventListener('click', () => {
+        let current = parseFloat(document.getElementById('currentEc').value);
+        let target = parseFloat(document.getElementById('targetEcVal').value);
+        if(isNaN(current)) current = 0.6;
+        if(isNaN(target)) target = 1.2;
+        let diff = target - current;
+        if(diff <= 0) {
+            document.getElementById('ecResult').innerHTML = "✅ EC уже в норме или выше. Можно разбавить водой.";
+            return;
+        }
+        let mlAdd = Math.round((diff / 0.1) * 8);
+        document.getElementById('ecResult').innerHTML = `📈 Для повышения EC с ${current} до ${target} добавьте ~${mlAdd} мл питательного комплекса (А+В 50/50) на 46 л воды.`;
+    });
 </script>
 </body>
 </html>
