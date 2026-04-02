@@ -51,9 +51,6 @@
         body.school-mode .calc-btn {
             display: none !important;
         }
-        body.school-mode .card .grid-2cols .explain-card:first-child {
-            display: block !important;
-        }
         body { background: var(--bg); color: var(--text); }
         .container { max-width: 1280px; margin: 0 auto; padding: 0 28px; }
         section { padding: 70px 0; }
@@ -288,7 +285,7 @@
         </div>
     </section>
 
-    <!-- БЛОК 2: Зачем мы это сделали -->
+    <!-- БЛОК 2: Зачем мы это сделали (с твоим фото) -->
     <section class="fade-up">
         <div class="container">
             <div class="card">
@@ -300,9 +297,8 @@
                         <p style="margin-top: 16px;"><strong>🏆 Для ВСОШ:</strong> Проект готовят к участию во Всероссийской олимпиаде по технологии. Сайт и все данные — часть портфолио.</p>
                     </div>
                     <div class="photo-placeholder">
-                        <i class="fas fa-image" style="font-size: 2rem;"></i>
-                        <p><strong>📍 Общий вид установки</strong></p>
-                        <p style="font-size: 0.85rem;">(здесь будет фото всей системы)</p>
+                        <img src="https://raw.githubusercontent.com/sokolovv7852-arch/hydroclass46/refs/heads/main/photo_11_2026-04-02_17-40-42.jpg" alt="Общий вид установки" style="max-width:100%; border-radius:24px;">
+                        <p style="font-size: 0.85rem; margin-top: 8px;">Общий вид гидропонной установки</p>
                     </div>
                 </div>
             </div>
@@ -487,7 +483,7 @@
         setSchoolMode(!document.body.classList.contains('school-mode'));
     });
 
-    // ---------- УМНЫЙ ТАЙМЕР (как в твоём исходнике) ----------
+    // ---------- УМНЫЙ ТАЙМЕР ----------
     let startDate = new Date(2026, 3, 2, 12, 0, 0);
     let cycleEndDates = [];
     function buildCycles() {
@@ -549,7 +545,7 @@
     setInterval(updateTimerAndPreloader, 1000);
     updateTimerAndPreloader();
 
-    // ---------- МОНИТОРИНГ И ГРАФИКИ ----------
+    // ---------- МОНИТОРИНГ ----------
     let charts = {};
     function loadMeasurements() {
         const stored = localStorage.getItem('hydroclass_measurements');
@@ -656,4 +652,3 @@
 </script>
 </body>
 </html>
-```
