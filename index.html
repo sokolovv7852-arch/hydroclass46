@@ -1,3 +1,6 @@
+Вот **полностью изменённый код сайта**, где старая CSS‑3D модель заменена на новую интерактивную Three.js‑модель (с вращением мышкой, дверцами, камерами, фиолетовой подсветкой и отражающей фольгой), как просила другая нейросеть.
+
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -116,126 +119,14 @@
             gap: 30px;
         }
         .model3d-container {
-            perspective: 800px;
-            margin: 20px 0;
             display: flex;
             justify-content: center;
+            margin: 20px 0;
         }
         .model3d {
-            width: 500px;
+            width: 100%;
             height: 450px;
             position: relative;
-            transform-style: preserve-3d;
-            transform: rotateX(15deg) rotateY(-25deg);
-            cursor: grab;
-            transition: transform 0.05s linear;
-        }
-        .model3d:active { cursor: grabbing; }
-        /* Группа элементов модели */
-        .leg {
-            position: absolute;
-            width: 8px;
-            height: 50px;
-            background: #222;
-            bottom: -50px;
-            border-radius: 4px;
-        }
-        .cabinet {
-            position: absolute;
-            width: 400px;
-            height: 180px;
-            background: #111;
-            bottom: 0;
-            left: 50px;
-            border-radius: 8px 8px 4px 4px;
-            box-shadow: inset 0 0 0 2px #2a2a2a;
-        }
-        .door-left, .door-right {
-            position: absolute;
-            width: 190px;
-            height: 160px;
-            background: #1a3a2a;
-            bottom: 10px;
-            border-radius: 8px;
-            border: 1px solid #2a5a3a;
-        }
-        .door-left { left: 15px; }
-        .door-right { right: 15px; }
-        .handle {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            background: #d4af37;
-            border-radius: 50%;
-            top: 70px;
-        }
-        .door-left .handle { right: 15px; }
-        .door-right .handle { left: 15px; }
-        .chamber-left, .chamber-right {
-            position: absolute;
-            width: 185px;
-            height: 170px;
-            background: rgba(30,30,40,0.8);
-            bottom: 180px;
-            border-radius: 12px 12px 0 0;
-            overflow: hidden;
-            backdrop-filter: blur(2px);
-        }
-        .chamber-left { left: 55px; }
-        .chamber-right { right: 55px; }
-        .glass {
-            position: absolute;
-            width: 100%;
-            height: 55%;
-            background: rgba(120,180,220,0.25);
-            top: 0;
-            border-radius: 12px 12px 0 0;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-        .purple-light {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at top, #b400ff20, #ff00cc20);
-            top: 0;
-            pointer-events: none;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0% { opacity: 0.6; }
-            100% { opacity: 1; }
-        }
-        .foil {
-            position: absolute;
-            width: 100%;
-            height: 45%;
-            bottom: 0;
-            background: repeating-linear-gradient(45deg, #aaa, #aaa 5px, #ccc 5px, #ccc 10px);
-            opacity: 0.5;
-        }
-        .qr-code {
-            position: absolute;
-            right: 65px;
-            bottom: 195px;
-            width: 35px;
-            height: 35px;
-            background: white;
-            border: 1px solid black;
-            font-size: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-        .decal {
-            position: absolute;
-            right: 5px;
-            top: 30%;
-            width: 20px;
-            height: 40px;
-            background: #ffaa44;
-            border-radius: 4px;
-            opacity: 0.8;
         }
         .instruction {
             text-align: center;
@@ -254,7 +145,7 @@
             background: #1e3a31;
         }
         @media (max-width: 700px) {
-            .model3d { transform: scale(0.7) rotateX(15deg) rotateY(-25deg); margin: -60px 0; }
+            .model3d { height: 350px; }
         }
         .timer-giant {
             font-size: 2.5rem;
@@ -331,46 +222,16 @@
         </div>
     </section>
 
-    <!-- 3D-модель на CSS -->
+    <!-- 3D-модель на Three.js -->
     <section id="3d">
         <div class="container">
             <h2><i class="fas fa-cube"></i> 3D-модель установки</h2>
             <div class="card">
                 <div class="model3d-container">
-                    <div class="model3d" id="model">
-                        <!-- Ножки -->
-                        <div class="leg" style="left: 20px;"></div>
-                        <div class="leg" style="right: 20px;"></div>
-                        <div class="leg" style="left: 20px; bottom: -50px;"></div>
-                        <div class="leg" style="right: 20px; bottom: -50px;"></div>
-                        
-                        <!-- Нижний шкаф -->
-                        <div class="cabinet"></div>
-                        <div class="door-left"></div>
-                        <div class="door-right"></div>
-                        <div class="handle" style="left: auto; right: 25px; top: 70px;"></div>
-                        <div class="handle" style="left: 25px; top: 70px;"></div>
-                        
-                        <!-- Левая камера -->
-                        <div class="chamber-left">
-                            <div class="glass"></div>
-                            <div class="purple-light"></div>
-                            <div class="foil"></div>
-                        </div>
-                        <!-- Правая камера -->
-                        <div class="chamber-right">
-                            <div class="glass"></div>
-                            <div class="purple-light"></div>
-                            <div class="foil"></div>
-                        </div>
-                        <!-- QR-код -->
-                        <div class="qr-code">📷 QR</div>
-                        <!-- Декоративные наклейки -->
-                        <div class="decal"></div>
-                    </div>
+                    <div class="model3d" id="model"></div>
                 </div>
-                <div class="instruction">🖱️ Нажми и тяни мышкой — модель вращается</div>
-                <p class="instruction" style="margin-top: 10px;">Две прозрачные камеры с фиолетовым светом, внутри отражающая плёнка. Нижний отсек — тёмно-зелёные дверцы с золотыми ручками. QR-код на передней панели.</p>
+                <div class="instruction">🖱️ Нажми и тяни мышкой — модель вращается (Three.js)</div>
+                <p class="instruction" style="margin-top: 10px;">Две прозрачные камеры с фиолетовым светом, внутри отражающая плёнка. Нижний отсек — тёмно-зелёные дверцы с золотыми ручками. QR-код и наклейки добавлены.</p>
             </div>
         </div>
     </section>
@@ -414,35 +275,6 @@
         localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
     });
 
-    // 3D вращение модели
-    const model = document.getElementById('model');
-    let startX, startY, currentX = -25, currentY = 15, dragging = false;
-    model.addEventListener('mousedown', (e) => { dragging = true; startX = e.clientX; startY = e.clientY; });
-    window.addEventListener('mousemove', (e) => {
-        if(!dragging) return;
-        let dx = e.clientX - startX;
-        let dy = e.clientY - startY;
-        currentX += dx * 0.5;
-        currentY -= dy * 0.3;
-        model.style.transform = `rotateX(${currentY}deg) rotateY(${currentX}deg)`;
-        startX = e.clientX;
-        startY = e.clientY;
-    });
-    window.addEventListener('mouseup', () => { dragging = false; });
-    // Для сенсорных
-    model.addEventListener('touchstart', (e) => { dragging = true; startX = e.touches[0].clientX; startY = e.touches[0].clientY; });
-    window.addEventListener('touchmove', (e) => {
-        if(!dragging) return;
-        let dx = e.touches[0].clientX - startX;
-        let dy = e.touches[0].clientY - startY;
-        currentX += dx * 0.5;
-        currentY -= dy * 0.3;
-        model.style.transform = `rotateX(${currentY}deg) rotateY(${currentX}deg)`;
-        startX = e.touches[0].clientX;
-        startY = e.touches[0].clientY;
-    });
-    window.addEventListener('touchend', () => { dragging = false; });
-
     // Таймер
     const startDate = new Date(2026, 3, 2, 12, 0, 0);
     const harvestDate = new Date(startDate.getTime() + 30*24*60*60*1000);
@@ -476,5 +308,216 @@
         document.getElementById('result').innerHTML = `📈 Добавь ~${ml} мл удобрений (монофосфат калия + хелат железа) на 46 л.`;
     });
 </script>
+
+<!-- 3D библиотеки и новая модель от другой нейросети -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/controls/OrbitControls.js"></script>
+
+<script>
+const container = document.getElementById("model");
+
+// сцена
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xf0f9f4);
+
+// камера
+const camera = new THREE.PerspectiveCamera(70, container.clientWidth / 450, 0.1, 1000);
+camera.position.set(5, 3, 6);
+
+// рендер
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(container.clientWidth, 450);
+container.appendChild(renderer.domElement);
+
+// управление
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.05;
+controls.autoRotate = false;
+controls.enableZoom = true;
+controls.zoomSpeed = 1.2;
+
+// свет
+const light = new THREE.PointLight(0xffffff, 1.2);
+light.position.set(5, 5, 5);
+scene.add(light);
+
+const ambient = new THREE.AmbientLight(0xffffff, 0.4);
+scene.add(ambient);
+
+// дополнительный свет сзади для теней
+const backLight = new THREE.DirectionalLight(0xffffff, 0.5);
+backLight.position.set(-2, 2, -3);
+scene.add(backLight);
+
+// ===== МОДЕЛЬ =====
+
+// корпус
+const body = new THREE.Mesh(
+    new THREE.BoxGeometry(4, 2, 2),
+    new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.4, metalness: 0.1 })
+);
+body.position.y = 0;
+scene.add(body);
+
+// двери (зелёные)
+const doorMat = new THREE.MeshStandardMaterial({ color: 0x1a3a2a, roughness: 0.3, metalness: 0.1 });
+
+function door(x) {
+    const d = new THREE.Mesh(new THREE.BoxGeometry(1.8, 1.6, 0.08), doorMat);
+    d.position.set(x, 0, 1.05);
+    scene.add(d);
+
+    // ручка
+    const handle = new THREE.Mesh(
+        new THREE.SphereGeometry(0.07, 16, 16),
+        new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.7, roughness: 0.3 })
+    );
+    handle.position.set(x > 0 ? x - 0.65 : x + 0.65, 0.1, 1.12);
+    scene.add(handle);
+}
+
+door(-1);
+door(1);
+
+// камеры
+function chamber(x) {
+    // стекло (прозрачное)
+    const glass = new THREE.Mesh(
+        new THREE.BoxGeometry(1.8, 1.7, 1.6),
+        new THREE.MeshStandardMaterial({
+            color: 0x88ccff,
+            transparent: true,
+            opacity: 0.25,
+            metalness: 0.9,
+            roughness: 0.2
+        })
+    );
+    glass.position.set(x, 2, 0);
+    scene.add(glass);
+
+    // внутренняя "фольга" (металлик)
+    const inner = new THREE.Mesh(
+        new THREE.BoxGeometry(1.6, 1.5, 1.4),
+        new THREE.MeshStandardMaterial({
+            color: 0xaaaaaa,
+            metalness: 0.85,
+            roughness: 0.25,
+            emissive: 0x222222
+        })
+    );
+    inner.position.set(x, 2, 0);
+    scene.add(inner);
+
+    // фиолетовый свет (grow light)
+    const growLight = new THREE.PointLight(0xff44ff, 1.8, 4);
+    growLight.position.set(x, 2.5, 0);
+    scene.add(growLight);
+    
+    // добавим маленькую сферу, имитирующую лампу
+    const lamp = new THREE.Mesh(
+        new THREE.SphereGeometry(0.12, 8, 8),
+        new THREE.MeshStandardMaterial({ color: 0xff88ff, emissive: 0x440044, emissiveIntensity: 0.8 })
+    );
+    lamp.position.set(x, 2.7, 0.2);
+    scene.add(lamp);
+}
+
+chamber(-1);
+chamber(1);
+
+// ножки
+function leg(x, z) {
+    const l = new THREE.Mesh(
+        new THREE.BoxGeometry(0.12, 0.8, 0.12),
+        new THREE.MeshStandardMaterial({ color: 0x222222, metalness: 0.3 })
+    );
+    l.position.set(x, -1.4, z);
+    scene.add(l);
+}
+
+leg(-1.9, 0.9);
+leg(1.9, 0.9);
+leg(-1.9, -0.9);
+leg(1.9, -0.9);
+
+// QR-код на передней панели (маленькая чёрно-белая пластинка)
+const qrPlane = new THREE.Mesh(
+    new THREE.BoxGeometry(0.5, 0.5, 0.05),
+    new THREE.MeshStandardMaterial({ color: 0xffffff })
+);
+qrPlane.position.set(1.4, -0.6, 1.06);
+scene.add(qrPlane);
+// чёрные квадратики для имитации QR
+for (let i = -0.2; i <= 0.2; i+=0.1) {
+    for (let j = -0.2; j <= 0.2; j+=0.1) {
+        if (Math.random() > 0.6) {
+            const qrDot = new THREE.Mesh(
+                new THREE.BoxGeometry(0.04, 0.04, 0.06),
+                new THREE.MeshStandardMaterial({ color: 0x000000 })
+            );
+            qrDot.position.set(1.4 + i, -0.6 + j, 1.09);
+            scene.add(qrDot);
+        }
+    }
+}
+
+// Наклейка сбоку (декаль)
+const decal = new THREE.Mesh(
+    new THREE.BoxGeometry(0.4, 0.8, 0.05),
+    new THREE.MeshStandardMaterial({ color: 0xffaa44, emissive: 0x442200, emissiveIntensity: 0.2 })
+);
+decal.position.set(2.05, 0.2, 0.6);
+scene.add(decal);
+
+// верхняя планка / крышка
+const topBar = new THREE.Mesh(
+    new THREE.BoxGeometry(4.2, 0.1, 2.2),
+    new THREE.MeshStandardMaterial({ color: 0x333333, metalness: 0.2 })
+);
+topBar.position.set(0, 2.9, 0);
+scene.add(topBar);
+
+// задняя стенка для реализма
+const backWall = new THREE.Mesh(
+    new THREE.BoxGeometry(4.2, 2.4, 0.1),
+    new THREE.MeshStandardMaterial({ color: 0x1a1a1a })
+);
+backWall.position.set(0, 0.2, -1.1);
+scene.add(backWall);
+
+// анимация (пульсация фиолетового света)
+let time = 0;
+function animateLights() {
+    requestAnimationFrame(animateLights);
+    time += 0.02;
+    const intensity = 1.5 + Math.sin(time * 3) * 0.5;
+    scene.children.forEach(child => {
+        if (child.isPointLight && child.color.getHex() === 0xff44ff) {
+            child.intensity = intensity;
+        }
+    });
+    controls.update(); // обновляем OrbitControls
+    renderer.render(scene, camera);
+}
+animateLights();
+
+// адаптив
+window.addEventListener("resize", () => {
+    const width = container.clientWidth;
+    const height = 450;
+    renderer.setSize(width, height);
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+});
+
+// небольшая задержка для корректного отображения при загрузке
+setTimeout(() => {
+    renderer.setSize(container.clientWidth, 450);
+    camera.aspect = container.clientWidth / 450;
+    camera.updateProjectionMatrix();
+}, 100);
+</script>
 </body>
 </html>
+```
