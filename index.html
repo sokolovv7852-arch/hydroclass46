@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>HydroClass V4 | Умная гидропоника</title>
+    <title>HydroClass Dual | Гидропонная установка</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -231,21 +231,12 @@
             height: 250px;
             margin: 20px 0;
         }
-        .notification-badge {
-            background: #ff9800;
-            color: #1a2f28;
-            border-radius: 20px;
-            padding: 4px 12px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            margin-left: 8px;
-        }
     </style>
 </head>
 <body>
 <header class="navbar">
     <div class="container nav-flex">
-        <div class="logo"><i class="fas fa-leaf"></i> HydroClass V4 | Умная гидропоника</div>
+        <div class="logo"><i class="fas fa-leaf"></i> HydroClass Dual</div>
         <div style="display: flex; gap: 12px; align-items: center;">
             <div class="nav-links">
                 <a href="#system">Система</a>
@@ -262,20 +253,20 @@
     <!-- Hero -->
     <section class="fade-up">
         <div class="container">
-            <span class="badge"><i class="fas fa-flask"></i> DWC 2.0 • 2 ящика × 46л</span>
-            <h1>Два бака — <span class="gradient-text">бесконечные эксперименты</span><br>Клубника + салаты или A/B тесты</h1>
-            <p style="font-size: 1.2rem; max-width: 700px;">Первая посадка: <strong>2 апреля 2026</strong>. Автоматические циклы, фотоотчёт, полный контроль параметров.</p>
+            <span class="badge"><i class="fas fa-flask"></i> Глубокая культура (DWC) • 2 ящика по 46 л</span>
+            <h1>HydroClass Dual — <span class="gradient-text">гидропонная установка</span><br>своими руками</h1>
+            <p style="font-size: 1.2rem; max-width: 700px;">Два ящика, один насос с разделением на два выхода, кулеры от компьютера и светодиодные лампы. Выращиваем салаты, базилик и экспериментируем с разными сортами.</p>
             <div style="display: flex; gap: 30px; margin-top: 30px; flex-wrap: wrap;">
                 <div><strong>92 литра</strong><br>общий объём</div>
                 <div><strong>24 горшка</strong><br>агровата</div>
-                <div><strong>2 насоса</strong><br>независимые линии</div>
+                <div><strong>1 насос → 2 выхода</strong><br>подача раствора</div>
                 <div><strong>5000 лм</strong><br>полный спектр</div>
             </div>
-            <div class="slogan">💡 «Один ящик — рабочая лошадка, второй — полигон для экспериментов»</div>
+            <div class="slogan">💡 «Два ящика — больше возможностей для экспериментов»</div>
         </div>
     </section>
 
-    <!-- Концепция двух ящиков + текстовая история -->
+    <!-- Как собирали установку -->
     <section class="fade-up">
         <div class="container">
             <div class="card">
@@ -318,7 +309,7 @@
         </div>
     </section>
 
-    <!-- Фотозоны -->
+    <!-- Фотозоны (твои фото уже вставлены) -->
     <section id="system" class="fade-up">
         <div class="container">
             <h2>📸 Фотогалерея установки</h2>
@@ -357,7 +348,6 @@
                 <div class="chart-container"><canvas id="phChart"></canvas></div>
                 <div class="chart-container"><canvas id="ecChart"></canvas></div>
                 <div class="chart-container"><canvas id="tempChart"></canvas></div>
-                
                 <div id="recommendationBlock" style="margin-top: 20px; padding: 16px; background: var(--accent)10; border-radius: 28px;">
                     <strong><i class="fas fa-lightbulb"></i> Рекомендация:</strong> <span id="smartAdvice">Внесите первый замер, чтобы получить совет.</span>
                 </div>
@@ -414,81 +404,29 @@
 
 <footer>
     <div class="container" style="text-align: center;">
-        <p><i class="fas fa-seedling"></i> HydroClass Dual — два ящика, бесконечные эксперименты</p>
+        <p><i class="fas fa-seedling"></i> HydroClass Dual — гидропонная установка своими руками</p>
         <p>Первая посадка: 2 апреля 2026 • Автоциклы • Следующий урожай через 30 дней</p>
         <p style="margin-top: 16px;">✨ Школьный проект, 8 класс. ВСОШ | Технология</p>
     </div>
 </footer>
 
 <script>
-    // ======================== ОБЩИЕ ФУНКЦИИ ========================
-    const DEV_PASSWORD = 'hydro46';
-    let charts = {};
+    // Анимация появления
+    const faders = document.querySelectorAll('.fade-up');
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    faders.forEach(el => obs.observe(el));
 
-    function loadMeasurements() {
-        const stored = localStorage.getItem('hydroclass_measurements');
-        if(stored) return JSON.parse(stored);
-        return []; // пустой массив
-    }
+    // Тёмная тема + сохранение
+    const themeToggle = document.getElementById('themeToggle');
+    if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark');
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+        localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    });
 
-    function saveMeasurements(data) {
-        localStorage.setItem('hydroclass_measurements', JSON.stringify(data));
-    }
-
-    function addMeasurement(measure) {
-        let measurements = loadMeasurements();
-        measurements.push({ ...measure, timestamp: new Date().toISOString() });
-        if(measurements.length > 7) measurements.shift(); // храним последние 7
-        saveMeasurements(measurements);
-        updateChartsAndAdvice();
-    }
-
-    function getLastMeasurements() {
-        return loadMeasurements();
-    }
-
-    function updateChartsAndAdvice() {
-        const data = getLastMeasurements();
-        if(data.length === 0) {
-            document.getElementById('smartAdvice').innerText = 'Внесите первый замер, чтобы получить совет.';
-            return;
-        }
-        const labels = data.map((_, idx) => `Замер ${idx+1}`);
-        const phVals = data.map(d => d.ph);
-        const ecVals = data.map(d => d.ec);
-        const waterTempVals = data.map(d => d.waterTemp);
-        const airTempVals = data.map(d => d.airTemp);
-        
-        if(charts.phChart) charts.phChart.destroy();
-        if(charts.ecChart) charts.ecChart.destroy();
-        if(charts.tempChart) charts.tempChart.destroy();
-        
-        const ctxPh = document.getElementById('phChart').getContext('2d');
-        charts.phChart = new Chart(ctxPh, { type: 'line', data: { labels, datasets: [{ label: 'pH', data: phVals, borderColor: '#1b8c4e', tension: 0.3 }] } });
-        const ctxEc = document.getElementById('ecChart').getContext('2d');
-        charts.ecChart = new Chart(ctxEc, { type: 'line', data: { labels, datasets: [{ label: 'EC (мСм)', data: ecVals, borderColor: '#ff9800', tension: 0.3 }] } });
-        const ctxTemp = document.getElementById('tempChart').getContext('2d');
-        charts.tempChart = new Chart(ctxTemp, { type: 'line', data: { labels, datasets: [{ label: 'Вода °C', data: waterTempVals, borderColor: '#2196f3' }, { label: 'Воздух °C', data: airTempVals, borderColor: '#f44336' }] } });
-        
-        const last = data[data.length-1];
-        let advice = '';
-        if(last.ph < 5.5) advice += '⚠️ pH слишком низкий (ниже 5.5). Добавьте щелочной раствор (KOH). ';
-        else if(last.ph > 6.5) advice += '⚠️ pH слишком высокий (выше 6.5). Добавьте кислоту (H3PO4). ';
-        else advice += '✅ pH в норме (5.5–6.5). ';
-        
-        if(last.ec < 0.8) advice += `🌱 EC низкий (${last.ec}). Добавьте удобрения (монофосфат калия, хелат железа, кальциевую селитру). `;
-        else if(last.ec > 1.8) advice += `⚠️ EC высокий (${last.ec}). Разбавьте чистой водой. `;
-        else advice += `✅ EC в норме (0.8–1.8). `;
-        
-        document.getElementById('smartAdvice').innerHTML = advice;
-    }
-
-    function exportToPDF() {
-        const element = document.getElementById('monitoring');
-        html2pdf().from(element).set({ margin: 0.5, filename: 'hydroclass_report.pdf' }).save();
-    }
-
-    // ======================== ТАЙМЕР ========================
+    // ---------- УМНЫЙ ТАЙМЕР (без изменений) ----------
     let startDate = new Date(2026, 3, 2, 12, 0, 0);
     let cycleEndDates = [];
     function buildCycles() {
@@ -550,27 +488,73 @@
     setInterval(updateTimerAndPreloader, 1000);
     updateTimerAndPreloader();
 
-    // ======================== АНИМАЦИИ, ТЕМА, ПАНЕЛЬ РАЗРАБА ========================
-    const faders = document.querySelectorAll('.fade-up');
-    const obs = new IntersectionObserver(entries => { entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.1 });
-    faders.forEach(el => obs.observe(el));
-
-    if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark');
-    document.getElementById('themeToggle').addEventListener('click', () => {
-        document.body.classList.toggle('dark');
-        localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-    });
-
+    // ---------- МОНИТОРИНГ И ГРАФИКИ ----------
+    let charts = {};
+    function loadMeasurements() {
+        const stored = localStorage.getItem('hydroclass_measurements');
+        return stored ? JSON.parse(stored) : [];
+    }
+    function saveMeasurements(data) {
+        localStorage.setItem('hydroclass_measurements', JSON.stringify(data));
+    }
+    function addMeasurement(measure) {
+        let measurements = loadMeasurements();
+        measurements.push({ ...measure, timestamp: new Date().toISOString() });
+        if(measurements.length > 7) measurements.shift();
+        saveMeasurements(measurements);
+        updateChartsAndAdvice();
+    }
+    function updateChartsAndAdvice() {
+        const data = loadMeasurements();
+        if(data.length === 0) {
+            document.getElementById('smartAdvice').innerText = 'Внесите первый замер, чтобы получить совет.';
+            return;
+        }
+        const labels = data.map((_, idx) => `Замер ${idx+1}`);
+        const phVals = data.map(d => d.ph);
+        const ecVals = data.map(d => d.ec);
+        const waterTempVals = data.map(d => d.waterTemp);
+        const airTempVals = data.map(d => d.airTemp);
+        
+        if(charts.phChart) charts.phChart.destroy();
+        if(charts.ecChart) charts.ecChart.destroy();
+        if(charts.tempChart) charts.tempChart.destroy();
+        
+        const ctxPh = document.getElementById('phChart').getContext('2d');
+        charts.phChart = new Chart(ctxPh, { type: 'line', data: { labels, datasets: [{ label: 'pH', data: phVals, borderColor: '#1b8c4e', tension: 0.3 }] } });
+        const ctxEc = document.getElementById('ecChart').getContext('2d');
+        charts.ecChart = new Chart(ctxEc, { type: 'line', data: { labels, datasets: [{ label: 'EC (мСм)', data: ecVals, borderColor: '#ff9800', tension: 0.3 }] } });
+        const ctxTemp = document.getElementById('tempChart').getContext('2d');
+        charts.tempChart = new Chart(ctxTemp, { type: 'line', data: { labels, datasets: [{ label: 'Вода °C', data: waterTempVals, borderColor: '#2196f3' }, { label: 'Воздух °C', data: airTempVals, borderColor: '#f44336' }] } });
+        
+        const last = data[data.length-1];
+        let advice = '';
+        if(last.ph < 5.5) advice += '⚠️ pH слишком низкий (ниже 5.5). Добавьте щелочной раствор (KOH). ';
+        else if(last.ph > 6.5) advice += '⚠️ pH слишком высокий (выше 6.5). Добавьте кислоту (H3PO4). ';
+        else advice += '✅ pH в норме (5.5–6.5). ';
+        
+        if(last.ec < 0.8) advice += `🌱 EC низкий (${last.ec}). Добавьте удобрения (монофосфат калия, хелат железа, кальциевую селитру). `;
+        else if(last.ec > 1.8) advice += `⚠️ EC высокий (${last.ec}). Разбавьте чистой водой. `;
+        else advice += `✅ EC в норме (0.8–1.8). `;
+        
+        document.getElementById('smartAdvice').innerHTML = advice;
+    }
+    function exportToPDF() {
+        const element = document.getElementById('monitoring');
+        html2pdf().from(element).set({ margin: 0.5, filename: 'hydroclass_report.pdf' }).save();
+    }
+    document.getElementById('exportPdfBtn').addEventListener('click', exportToPDF);
+    
+    // Панель разработчика
     const devBtn = document.getElementById('devBtn');
     const devPanel = document.getElementById('devPanel');
     devBtn.addEventListener('click', () => {
         const pwd = prompt('Введите пароль разработчика:');
-        if(pwd === DEV_PASSWORD) {
+        if(pwd === 'hydro46') {
             devPanel.style.display = 'block';
             devBtn.innerHTML = '<i class="fas fa-check"></i> Режим разработчика';
         } else alert('Неверный пароль');
     });
-
     document.getElementById('saveMeasureBtn').addEventListener('click', () => {
         const ph = parseFloat(document.getElementById('inputPh').value);
         const ec = parseFloat(document.getElementById('inputEc').value);
@@ -591,10 +575,8 @@
         document.getElementById('inputHumidity').value = '';
         document.getElementById('inputNote').value = '';
     });
-
-    document.getElementById('exportPdfBtn').addEventListener('click', exportToPDF);
-
-    // Калькулятор универсальный (без А+В)
+    
+    // Калькулятор универсальный
     document.getElementById('universalCalcBtn').addEventListener('click', () => {
         let current = parseFloat(document.getElementById('calcCurrentEc').value);
         let target = parseFloat(document.getElementById('calcTargetEc').value);
@@ -608,7 +590,7 @@
         }
         document.getElementById('universalResult').innerHTML = `📊 Нужно повысить EC на <strong>${diff.toFixed(1)}</strong> мСм в ${volume} литрах. Добавьте удобрения (монофосфат калия, хелат железа, кальциевую селитру) небольшими порциями, контролируя EC после каждого добавления.`;
     });
-
+    
     updateChartsAndAdvice();
 </script>
 </body>
