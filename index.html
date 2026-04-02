@@ -231,6 +231,76 @@
             height: 250px;
             margin: 20px 0;
         }
+        /* 3D модель */
+        .model3d-container {
+            perspective: 800px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+        }
+        .model3d {
+            width: 300px;
+            height: 300px;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateX(20deg) rotateY(-30deg);
+            transition: transform 0.1s;
+            cursor: grab;
+        }
+        .model3d:active {
+            cursor: grabbing;
+        }
+        .box {
+            position: absolute;
+            width: 200px;
+            height: 100px;
+            background: rgba(27, 140, 78, 0.3);
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        /* грани ящиков */
+        .box-front  { transform: translateZ(50px); background: rgba(27, 140, 78, 0.5); }
+        .box-back   { transform: translateZ(-50px) rotateY(180deg); background: rgba(27, 140, 78, 0.5); }
+        .box-left   { transform: translateX(-100px) rotateY(-90deg); width: 100px; background: rgba(27, 140, 78, 0.4); }
+        .box-right  { transform: translateX(100px) rotateY(90deg); width: 100px; background: rgba(27, 140, 78, 0.4); }
+        .box-top    { transform: translateY(-50px) rotateX(90deg); height: 100px; background: rgba(27, 140, 78, 0.6); display: flex; gap: 8px; flex-wrap: wrap; }
+        .box-bottom { transform: translateY(50px) rotateX(-90deg); height: 100px; background: rgba(27, 140, 78, 0.2); }
+        /* лампы - маленькие кубики */
+        .lamp {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ffd966;
+            border-radius: 50%;
+            box-shadow: 0 0 12px #ffaa33;
+        }
+        /* кулеры - кружки */
+        .fan {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: #aaa;
+            border-radius: 50%;
+            border: 2px solid #555;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        .instruction {
+            font-size: 0.8rem;
+            margin-top: 12px;
+            text-align: center;
+            color: var(--text-muted);
+        }
     </style>
 </head>
 <body>
@@ -242,6 +312,7 @@
                 <a href="#system">Система</a>
                 <a href="#diary">Дневник</a>
                 <a href="#monitoring">Мониторинг</a>
+                <a href="#model3d">3D-модель</a>
             </div>
             <button class="dev-btn" id="devBtn"><i class="fas fa-lock"></i> 🔧 Войти</button>
             <button class="theme-toggle" id="themeToggle"><i class="fas fa-sun"></i>/<i class="fas fa-moon"></i></button>
@@ -320,6 +391,37 @@
                 <div class="card"><h3>Горшочки + агровата</h3><div class="photo-placeholder"><img src="https://raw.githubusercontent.com/sokolovv7852-arch/hydroclass46/refs/heads/main/photo_19_2026-04-02_17-40-42.jpg" alt="Горшки"><span class="caption">24 стаканчика, семена салатов и базилика</span></div></div>
                 <div class="card"><h3>Корни в DWC</h3><div class="photo-placeholder"><img src="https://raw.githubusercontent.com/sokolovv7852-arch/hydroclass46/refs/heads/main/mceu_37402613121758010191266-1758010191379.png" alt="Корни"><span class="caption">Белые здоровые корни</span></div></div>
                 <div class="card"><h3>Салаты и базилик</h3><div class="photo-placeholder"><img src="https://raw.githubusercontent.com/sokolovv7852-arch/hydroclass46/refs/heads/main/photo_18_2026-04-02_17-40-42.jpg" alt="Салаты"><span class="caption">Московский, Гранд, Кружевница</span></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3D-модель установки -->
+    <section id="model3d" class="fade-up">
+        <div class="container">
+            <h2><i class="fas fa-cube"></i> 3D-модель установки</h2>
+            <div class="card" style="text-align: center;">
+                <div class="model3d-container">
+                    <div class="model3d" id="model3d">
+                        <!-- Ящик 1 -->
+                        <div class="box box-front" style="transform: translateZ(50px);">Ящик 46л</div>
+                        <div class="box box-back" style="transform: translateZ(-50px) rotateY(180deg);">Ящик 46л</div>
+                        <div class="box box-left" style="transform: translateX(-100px) rotateY(-90deg);"></div>
+                        <div class="box box-right" style="transform: translateX(100px) rotateY(90deg);"></div>
+                        <div class="box box-top" style="transform: translateY(-50px) rotateX(90deg); display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; align-items: center;">
+                            <span style="font-size:8px;">🌱</span><span style="font-size:8px;">🌱</span><span style="font-size:8px;">🌱</span>
+                        </div>
+                        <div class="box box-bottom" style="transform: translateY(50px) rotateX(-90deg);"></div>
+                        <!-- Добавим лампы сверху -->
+                        <div class="lamp" style="top: -30px; left: 30px;"></div>
+                        <div class="lamp" style="top: -30px; left: 130px;"></div>
+                        <div class="lamp" style="top: -30px; left: 230px;"></div>
+                        <!-- Кулеры -->
+                        <div class="fan" style="bottom: -20px; left: 80px;"><i class="fas fa-fan"></i></div>
+                        <div class="fan" style="top: -50px; left: 170px;"><i class="fas fa-fan"></i></div>
+                    </div>
+                </div>
+                <div class="instruction">🖱️ Вращай модель мышкой или пальцем, чтобы рассмотреть со всех сторон</div>
+                <p class="caption" style="margin-top: 16px;">Схематичная 3D-модель: два ящика DWC, сверху лампы полного спектра, сбоку кулеры для аэрации и вентиляции.</p>
             </div>
         </div>
     </section>
@@ -426,7 +528,38 @@
         localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
     });
 
-    // ---------- УМНЫЙ ТАЙМЕР (без изменений) ----------
+    // 3D модель - вращение мышкой
+    const model = document.getElementById('model3d');
+    let mouseX = 0, mouseY = 0;
+    let currentRotateX = 20, currentRotateY = -30;
+    let dragging = false;
+    model.addEventListener('mousedown', (e) => { dragging = true; mouseX = e.clientX; mouseY = e.clientY; });
+    window.addEventListener('mousemove', (e) => {
+        if(!dragging) return;
+        let dx = e.clientX - mouseX;
+        let dy = e.clientY - mouseY;
+        currentRotateY += dx * 0.5;
+        currentRotateX -= dy * 0.3;
+        model.style.transform = `rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg)`;
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+    window.addEventListener('mouseup', () => { dragging = false; });
+    // для сенсорных экранов
+    model.addEventListener('touchstart', (e) => { dragging = true; mouseX = e.touches[0].clientX; mouseY = e.touches[0].clientY; });
+    window.addEventListener('touchmove', (e) => {
+        if(!dragging) return;
+        let dx = e.touches[0].clientX - mouseX;
+        let dy = e.touches[0].clientY - mouseY;
+        currentRotateY += dx * 0.5;
+        currentRotateX -= dy * 0.3;
+        model.style.transform = `rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg)`;
+        mouseX = e.touches[0].clientX;
+        mouseY = e.touches[0].clientY;
+    });
+    window.addEventListener('touchend', () => { dragging = false; });
+
+    // ---------- УМНЫЙ ТАЙМЕР ----------
     let startDate = new Date(2026, 3, 2, 12, 0, 0);
     let cycleEndDates = [];
     function buildCycles() {
@@ -488,7 +621,7 @@
     setInterval(updateTimerAndPreloader, 1000);
     updateTimerAndPreloader();
 
-    // ---------- МОНИТОРИНГ И ГРАФИКИ ----------
+    // ---------- МОНИТОРИНГ ----------
     let charts = {};
     function loadMeasurements() {
         const stored = localStorage.getItem('hydroclass_measurements');
